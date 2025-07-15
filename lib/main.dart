@@ -12,7 +12,7 @@ void main() async {
   await dbInitialize();
   await initializeNotifications();
   runApp(const MyApp());
-  log('main is finished');
+  log('main is completed');
 }
 
 class MyApp extends StatefulWidget {
