@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:librrr_management/controllers/common%20functions/notifications_utils.dart';
-import 'package:librrr_management/controllers/db%20functions/db_main_functions.dart';
-import 'package:librrr_management/screens/splash%20screen/src_splash.dart';
-import 'package:librrr_management/utilities/theme_class_notifier.dart';
+import 'package:librrr_management/features/notifications/controllers/notifications_utils.dart';
+import 'package:librrr_management/data/data_sources/local_data/db_main_functions.dart';
+import 'package:librrr_management/splash/src_splash.dart';
+import 'package:librrr_management/core/theme_class_notifier.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
