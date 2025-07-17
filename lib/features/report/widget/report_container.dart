@@ -124,33 +124,26 @@ class _ReportOverviewSectionState extends State<ReportOverviewSection> {
                 )
               ],
             )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          : Wrap(
+              runAlignment: WrapAlignment.center,
+              spacing: 40,
+              runSpacing: 20,
               children: [
                 DashBoardContainer(
                     icon: Icons.library_books_outlined,
                     boxColor: Colors.blue,
                     subHead: 'Total Books',
                     count: widget.totalBook.toString()),
-                const SizedBox(
-                  width: 40,
-                ),
                 DashBoardContainer(
                     icon: Icons.people_sharp,
                     boxColor: Colors.yellow,
                     subHead: 'Members',
                     count: widget.memberCount.toString()),
-                const SizedBox(
-                  width: 40,
-                ),
                 DashBoardContainer(
                     icon: Icons.book_outlined,
                     boxColor: Colors.orange.withOpacity(0.6),
                     subHead: 'Books \n Borrowed',
                     count: widget.borrowedBookCount.toString()),
-                const SizedBox(
-                  width: 40,
-                ),
                 DashBoardContainer(
                     icon: Icons.account_balance_wallet_rounded,
                     boxColor: Colors.red.withOpacity(0.6),
