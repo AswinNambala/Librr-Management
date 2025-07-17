@@ -408,7 +408,7 @@ class ReportAllBooksChart extends StatefulWidget {
 }
 
 class _ReportAllBooksChartState extends State<ReportAllBooksChart> {
-  List<String> gerneList = [
+  List<String> genreList = [
     'Supernatural',
     'Romance',
     'Travel',
@@ -416,6 +416,7 @@ class _ReportAllBooksChartState extends State<ReportAllBooksChart> {
     'Comedy',
     'Other'
   ];
+
   List<PieChartSectionData> genreData = [];
   Map<String, int> genreCount = {};
 
@@ -426,15 +427,30 @@ class _ReportAllBooksChartState extends State<ReportAllBooksChart> {
   }
 
   void loadingData() {
-    genreCount = ReportUtils.reportFliterBooksGenre(gerneList);
-    genreData = ReportUtils.reportPieChartDataGet(context, genreCount);
+    genreCount = ReportUtils.reportFliterBooksGenre(genreList);
+
+    genreData = genreCount.entries
+        .where((entry) => entry.value > 0) 
+        .map((entry) {
+      int index = genreList.indexOf(entry.key);
+      return PieChartSectionData(
+        value: entry.value.toDouble(),
+        title: '${entry.value}',
+        color: ReportUtils.colorList[index],
+        titleStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 500,
-      height: 480,
+      height: 550,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface,
@@ -448,6 +464,7 @@ class _ReportAllBooksChartState extends State<ReportAllBooksChart> {
         ],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
@@ -456,137 +473,86 @@ class _ReportAllBooksChartState extends State<ReportAllBooksChart> {
                 color: Colors.yellow,
                 size: 30,
               ),
-              const SizedBox(
-                width: 10,
-              ),
+              const SizedBox(width: 10),
               AboutTestStyle(
                 text: 'Books Categories Distribution',
                 styleText: Theme.of(context).textTheme.bodyLarge,
               ),
             ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          const SizedBox(height: 15),
           SizedBox(
-            width: widget.isWeb? double.infinity : 450,
+            width: widget.isWeb ? double.infinity : 450,
             height: 300,
             child: Center(
-              child: genreCount.isEmpty
+              child: genreData.isEmpty
                   ? const CircularProgressIndicator()
-                  : PieChart(PieChartData(
-                      sections: genreData,
-                      centerSpaceRadius: 50,
-                      sectionsSpace: 3,
-                      borderData: FlBorderData(show: false),
-                      pieTouchData: PieTouchData(enabled: false))),
+                  : Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: PieChart(
+                        PieChartData(
+                          sections: genreData,
+                          centerSpaceRadius: 50,
+                          sectionsSpace: 3,
+                          borderData: FlBorderData(show: false),
+                          pieTouchData: PieTouchData(enabled: false),
+                        ),
+                      ),
+                    ),
             ),
           ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.circle,
-                    color: ReportUtils.colorList[0],
-                    size: 15,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  AboutTestStyle(
-                    text: 'Supernatural',
-                    styleText: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: ReportUtils.colorList[1],
-                    size: 15,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  AboutTestStyle(
-                    text: 'Romance',
-                    styleText: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: ReportUtils.colorList[2],
-                    size: 15,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  AboutTestStyle(
-                    text: 'Travel',
-                    styleText: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.circle,
-                    color: ReportUtils.colorList[3],
-                    size: 15,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  AboutTestStyle(
-                    text: 'Personal Development',
-                    styleText: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: ReportUtils.colorList[4],
-                    size: 15,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  AboutTestStyle(
-                    text: 'Comedy',
-                    styleText: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.circle,
-                    color: ReportUtils.colorList[5],
-                    size: 15,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  AboutTestStyle(
-                    text: 'Other',
-                    styleText: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              )
-            ],
-          )
+          const SizedBox(height: 20),
+          _buildLegend(context),
         ],
       ),
+    );
+  }
+
+  Widget _buildLegend(BuildContext context) {
+    TextStyle? textStyle = Theme.of(context).textTheme.bodyMedium;
+    return Column(
+      children: [
+        Row(
+          children: [
+            _buildLegendItem(0, 'Supernatural', textStyle),
+            const SizedBox(width: 20),
+            _buildLegendItem(1, 'Romance', textStyle),
+            const SizedBox(width: 20),
+            _buildLegendItem(2, 'Travel', textStyle),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            _buildLegendItem(3, 'Personal Development', textStyle),
+            const SizedBox(width: 20),
+            _buildLegendItem(4, 'Comedy', textStyle),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            _buildLegendItem(5, 'Other', textStyle),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLegendItem(int index, String label, TextStyle? style) {
+    return Row(
+      children: [
+        Icon(
+          Icons.circle,
+          color: ReportUtils.colorList[index],
+          size: 15,
+        ),
+        const SizedBox(width: 10),
+        AboutTestStyle(
+          text: label,
+          styleText: style,
+        ),
+      ],
     );
   }
 }

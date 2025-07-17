@@ -59,6 +59,7 @@ class _ReportScreenState extends State<ReportScreen> {
         bool isWeb = constraints.maxWidth > 900;
         return Container(
           width: double.infinity,
+      
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
