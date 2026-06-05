@@ -34,7 +34,7 @@ class _ReportBorrowChartState extends State<ReportBorrowMonthlyChart> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withValues(alpha: 0.3),
             spreadRadius: 2,
             blurRadius: 5,
           )
@@ -166,7 +166,7 @@ class _ReportBorrowChartState extends State<ReportBorrowMonthlyChart> {
                             color: Theme.of(context)
                                 .colorScheme
                                 .secondary
-                                .withOpacity(0.1),
+                                .withValues(alpha: 0.1),
                           ))
                     ])),
               ),
@@ -228,7 +228,7 @@ class _ReportBorrowWeeklyChartState extends State<ReportBorrowWeeklyChart> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withValues(alpha: 0.3),
             spreadRadius: 2,
             blurRadius: 5,
           )
@@ -358,11 +358,11 @@ class _ReportBorrowWeeklyChartState extends State<ReportBorrowWeeklyChart> {
                                 Theme.of(context)
                                     .colorScheme
                                     .primary
-                                    .withOpacity(0.3),
+                                    .withValues(alpha: 0.3),
                                 Theme.of(context)
                                     .colorScheme
                                     .primary
-                                    .withOpacity(0.1),
+                                    .withValues(alpha: 0.1),
                               ],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
@@ -457,7 +457,7 @@ class _ReportAllBooksChartState extends State<ReportAllBooksChart> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withValues(alpha: 0.3),
             spreadRadius: 2,
             blurRadius: 5,
           )

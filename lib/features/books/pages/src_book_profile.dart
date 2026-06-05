@@ -70,7 +70,7 @@ class _BooksProfileScreenState extends State<BooksProfileScreen>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomCenter,
                     colors: [
-                  Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
                   Theme.of(context).colorScheme.surface
                 ])),
             padding: const EdgeInsets.all(20),
@@ -145,7 +145,7 @@ class _BooksProfileScreenState extends State<BooksProfileScreen>
                             color: Theme.of(context).colorScheme.secondary,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.white.withOpacity(0.4),
+                                color: Colors.white.withValues(alpha: 0.4),
                                 spreadRadius: 2,
                                 blurRadius: 5,
                               )

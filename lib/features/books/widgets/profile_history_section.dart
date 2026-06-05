@@ -292,10 +292,10 @@ class _BooksProfileSectionState extends State<BooksProfileSection> {
           height: widget.isWeb ? 200 : 110,
           width: widget.isWeb ? 200 : 110,
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
+                  color: Colors.grey.withValues(alpha: 0.3),
                   spreadRadius: 2,
                   blurRadius: 5,
                 )
@@ -311,7 +311,7 @@ class _BooksProfileSectionState extends State<BooksProfileSection> {
                 : Icon(
                     Icons.book,
                     color:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                        Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
                     size: 35,
                   ),
           ),
@@ -435,7 +435,7 @@ void booksProfileBottomSheet(BuildContext context, BooksClass books,
                     color: Theme.of(context).colorScheme.surface,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
+                        color: Colors.grey.withValues(alpha: 0.3),
                         spreadRadius: 2,
                         blurRadius: 5,
                       )

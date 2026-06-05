@@ -14,7 +14,7 @@ ThemeData get darkTheme => ThemeData(
     ),
     brightness: Brightness.dark,
     iconTheme: const IconThemeData(color: Colors.white),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
         elevation: 8,
         color: const Color(0xFF3E5C76),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),

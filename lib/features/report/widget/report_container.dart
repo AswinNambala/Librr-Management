@@ -110,12 +110,12 @@ class _ReportOverviewSectionState extends State<ReportOverviewSection> {
                   children: [
                     DashBoardContainer(
                         icon: Icons.book_outlined,
-                        boxColor: Colors.orange.withOpacity(0.6),
+                        boxColor: Colors.orange.withValues(alpha: 0.6),
                         subHead: 'Books \n Borrowed',
                         count: widget.borrowedBookCount.toString()),
                     DashBoardContainer(
                         icon: Icons.account_balance_wallet_rounded,
-                        boxColor: Colors.red.withOpacity(0.6),
+                        boxColor: Colors.red.withValues(alpha: 0.6),
                         subHead: 'Total Fine',
                         count: widget.totalFineAmount != null
                             ? '₹${widget.totalFineAmount}'
@@ -141,12 +141,12 @@ class _ReportOverviewSectionState extends State<ReportOverviewSection> {
                     count: widget.memberCount.toString()),
                 DashBoardContainer(
                     icon: Icons.book_outlined,
-                    boxColor: Colors.orange.withOpacity(0.6),
+                    boxColor: Colors.orange.withValues(alpha: 0.6),
                     subHead: 'Books \n Borrowed',
                     count: widget.borrowedBookCount.toString()),
                 DashBoardContainer(
                     icon: Icons.account_balance_wallet_rounded,
-                    boxColor: Colors.red.withOpacity(0.6),
+                    boxColor: Colors.red.withValues(alpha: 0.6),
                     subHead: 'Total Fine',
                     count: widget.totalFineAmount != null
                         ? '₹${widget.totalFineAmount}'

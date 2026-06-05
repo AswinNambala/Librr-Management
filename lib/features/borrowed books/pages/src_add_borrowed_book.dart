@@ -180,7 +180,7 @@ class _AddBorrowedBooksState extends State<AddBorrowedBooks> {
                             fixedSize: isWeb
                                 ? const Size(400, 50)
                                 : const Size(170, 40),
-                            backgroundColor: Colors.black.withOpacity(0.8)),
+                            backgroundColor: Colors.black.withValues(alpha: 0.8)),
                         onPressed: () {
                           Navigator.pop(context);
                         },

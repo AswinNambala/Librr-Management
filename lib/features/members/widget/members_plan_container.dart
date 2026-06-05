@@ -30,8 +30,8 @@ class PlanContainer extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Theme.of(context).colorScheme.tertiary.withOpacity(0.9),
-              Theme.of(context).colorScheme.error.withOpacity(0.8)
+              Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.9),
+              Theme.of(context).colorScheme.error.withValues(alpha: 0.8)
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,

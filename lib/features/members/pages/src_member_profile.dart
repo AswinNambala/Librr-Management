@@ -96,7 +96,7 @@ class _MemebersProfileScreenState extends State<MemebersProfileScreen>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomCenter,
                     colors: [
-                  Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
                   Theme.of(context).colorScheme.surface
                 ])),
             padding: const EdgeInsets.all(20),

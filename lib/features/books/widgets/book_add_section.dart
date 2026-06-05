@@ -222,7 +222,7 @@ Future<void> addBookSelectLanguage(
                     style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 20),
                 DropdownButtonFormField<String>(
-                  value: selectedLanguage,
+                  initialValue: selectedLanguage,
                   items: bookLanguage
                       .map((lang) =>
                           DropdownMenuItem(value: lang, child: Text(lang)))
@@ -235,7 +235,7 @@ Future<void> addBookSelectLanguage(
                 ),
                 const SizedBox(height: 15),
                 DropdownButtonFormField<String>(
-                  value: selectedGenre,
+                  initialValue: selectedGenre,
                   items: booksGenres
                       .map((gen) =>
                           DropdownMenuItem(value: gen, child: Text(gen)))
@@ -266,7 +266,7 @@ Future<void> addBookSelectLanguage(
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black.withOpacity(0.8)),
+                          backgroundColor: Colors.black.withValues(alpha: 0.8)),
                       onPressed: () {
                         Navigator.pop(context, {
                           'language': selectedLanguage,

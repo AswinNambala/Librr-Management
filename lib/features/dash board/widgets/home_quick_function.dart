@@ -19,7 +19,7 @@ class QuickContainer extends StatelessWidget {
     return InkWell(
       onTap: navigate,
       borderRadius: BorderRadius.circular(20),
-      splashColor: Colors.deepPurple.withOpacity(0.2),
+      splashColor: Colors.deepPurple.withValues(alpha: 0.2),
       child: Container(
         height: 150,
         width: 180,
@@ -29,7 +29,7 @@ class QuickContainer extends StatelessWidget {
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
           colors: [
-          boxColor!.withOpacity(0.2) , boxColor!.withOpacity(0.25)
+          boxColor!.withValues(alpha: 0.2) , boxColor!.withValues(alpha: 0.25)
         ]),
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [

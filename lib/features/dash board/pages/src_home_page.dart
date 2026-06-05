@@ -17,7 +17,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Shimmer.fromColors(
-        baseColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+        baseColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
         highlightColor: Colors.black12,
         direction: ShimmerDirection.ltr,
         period: const Duration(seconds: 2),

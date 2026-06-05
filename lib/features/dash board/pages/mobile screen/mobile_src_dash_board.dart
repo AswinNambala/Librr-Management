@@ -90,7 +90,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomCenter,
                   colors: [
-                Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
                 Theme.of(context).colorScheme.surface,
               ])),
           child: Column(

@@ -53,7 +53,7 @@ class AllTextFormField extends StatelessWidget {
               hintStyle: Theme.of(context)
                   .textTheme
                   .bodyLarge!
-                  .copyWith(color: Colors.white.withOpacity(0.4)),
+                  .copyWith(color: Colors.white.withValues(alpha: 0.4)),
               suffixIcon: suffixIcon,
               filled: true,
               fillColor: Colors.black,

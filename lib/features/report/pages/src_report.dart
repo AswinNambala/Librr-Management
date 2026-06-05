@@ -69,7 +69,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Theme.of(context).colorScheme.tertiary.withOpacity(0.05),
+                  Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.05),
                   Theme.of(context).colorScheme.surface,
                 ],
               ),

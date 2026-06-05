@@ -38,7 +38,7 @@ class IntroScreen extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomCenter,
                       colors: [
-                    Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                    Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
                     Theme.of(context).colorScheme.surface
                   ])),
               child: LayoutBuilder(
@@ -59,7 +59,7 @@ class IntroScreen extends StatelessWidget {
                               color: Theme.of(context)
                                   .colorScheme
                                   .primary
-                                  .withOpacity(0.2),
+                                  .withValues(alpha: 0.2),
                               boxShadow: const [
                                 BoxShadow(
                                   color: Colors.black26,

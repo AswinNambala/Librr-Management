@@ -165,7 +165,7 @@ class _MembersProfileCurrentTabState extends State<MembersProfileCurrentTab> {
               begin: Alignment.topLeft,
               end: Alignment.bottomCenter,
               colors: [
-            Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             Theme.of(context).colorScheme.surface
           ])),
       child: widget.currentBooks.isEmpty
@@ -258,7 +258,7 @@ class _MembersProfileHistoryTabState extends State<MembersProfileHistoryTab> {
               begin: Alignment.topLeft,
               end: Alignment.bottomCenter,
               colors: [
-            Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             Theme.of(context).colorScheme.surface
           ])),
       child: widget.finishedBooks.isEmpty
@@ -364,7 +364,7 @@ class _MembersProfileLateFinesTabState
                 begin: Alignment.topLeft,
                 end: Alignment.bottomCenter,
                 colors: [
-              Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
               Theme.of(context).colorScheme.surface
             ])),
         child: widget.fineBooks.isEmpty
@@ -612,7 +612,7 @@ Widget buildPaymentOptionButton(BuildContext context, String label) {
       color: Colors.black,
       boxShadow: [
         BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
+          color: Colors.grey.withValues(alpha: 0.2),
           spreadRadius: 2,
           blurRadius: 5,
         )
@@ -667,7 +667,7 @@ class _MemberProfileDetialsSectionState
                       color: Theme.of(context).colorScheme.primary,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
+                          color: Colors.grey.withValues(alpha: 0.3),
                           spreadRadius: 2,
                           blurRadius: 5,
                         )

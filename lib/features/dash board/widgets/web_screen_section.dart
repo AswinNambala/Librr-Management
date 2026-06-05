@@ -111,7 +111,7 @@ class _WebMenuSectionState extends State<WebMenuSection> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             Theme.of(context).colorScheme.surface
           ],
           begin: Alignment.topLeft,
@@ -155,7 +155,7 @@ class _WebMenuSectionState extends State<WebMenuSection> {
                           vertical: 12, horizontal: 16),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? Colors.red.withOpacity(0.15)
+                            ? Colors.red.withValues(alpha: 0.15)
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
                       ),

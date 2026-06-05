@@ -64,7 +64,7 @@ class _BorrowedBooksListState extends State<BorrowedBooksList> {
             begin: Alignment.topLeft,
             end: Alignment.bottomCenter,
             colors: [
-              Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
               Theme.of(context).colorScheme.surface,
             ],
           ),

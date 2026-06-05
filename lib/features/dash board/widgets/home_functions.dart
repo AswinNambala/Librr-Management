@@ -25,7 +25,7 @@ class DashBoardContainer extends StatelessWidget {
         gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [boxColor!.withOpacity(0.2), boxColor!.withOpacity(0.25)]),
+            colors: [boxColor!.withValues(alpha: 0.2), boxColor!.withValues(alpha: 0.25)]),
         boxShadow: const [
           BoxShadow(
             color: Colors.black26,

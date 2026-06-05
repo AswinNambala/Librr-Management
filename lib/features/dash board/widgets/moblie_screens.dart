@@ -70,7 +70,7 @@ class MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 12),
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
               shape: BoxShape.circle,
             ),
             child: IconButton(
@@ -106,7 +106,7 @@ Widget? mobileScreenDrawer(BuildContext context) {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
                 Theme.of(context).colorScheme.surface
               ],
               begin: Alignment.topLeft,
@@ -149,7 +149,7 @@ Widget? mobileScreenDrawer(BuildContext context) {
                       color: Theme.of(context)
                           .colorScheme
                           .surfaceTint
-                          .withOpacity(0.5),
+                          .withValues(alpha: 0.5),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -168,8 +168,8 @@ Widget? mobileScreenDrawer(BuildContext context) {
                           Navigator.pop(context);
                           navigateTo(item['widget'], context);
                         },
-                        hoverColor: Colors.white.withOpacity(0.1),
-                        splashColor: Colors.white.withOpacity(0.2),
+                        hoverColor: Colors.white.withValues(alpha: 0.1),
+                        splashColor: Colors.white.withValues(alpha: 0.2),
                       ),
                     ),
                   )),

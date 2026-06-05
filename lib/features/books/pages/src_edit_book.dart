@@ -148,7 +148,7 @@ class _EditBooksState extends State<EditBooks> {
                           style: ElevatedButton.styleFrom(
                                fixedSize:
                               isWeb ? const Size(400, 50) : const Size(170, 40),
-                              backgroundColor: Colors.black.withOpacity(0.8)),
+                              backgroundColor: Colors.black.withValues(alpha: 0.8)),
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -163,7 +163,7 @@ class _EditBooksState extends State<EditBooks> {
                           style: ElevatedButton.styleFrom(
                              fixedSize:
                               isWeb ? const Size(400, 50) : const Size(170, 40),
-                            backgroundColor: Colors.red.withOpacity(0.8),
+                            backgroundColor: Colors.red.withValues(alpha: 0.8),
                           ),
                           onPressed: () {
                             final updatedBook = BooksClass(
