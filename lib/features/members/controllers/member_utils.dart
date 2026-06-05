@@ -42,8 +42,10 @@ class MemberUtils {
     if (pickedFile != null) {
       final byte = await pickedFile.readAsBytes();
       onPicked(byte);
+      // ignore: use_build_context_synchronously
       SnackBarForAll.showSuccess(context, 'Image added successfully');
     } else {
+      // ignore: use_build_context_synchronously
       SnackBarForAll.showError(context, 'Failed to add image');
     }
   }
@@ -215,6 +217,7 @@ class MemberUtils {
         final byte = await pickedFile.readAsBytes();
         member.profileImage = byte;
         onImageUpdated(byte);
+        // ignore: use_build_context_synchronously
         SnackBarForAll.showSuccess(context, 'Image updated');
       }
     }

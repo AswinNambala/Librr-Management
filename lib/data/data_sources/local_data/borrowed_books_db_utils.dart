@@ -40,8 +40,11 @@ class DbBorrowedBooksUtils {
           await bookBox.putAt(bookIndex, book);
         }
 
+        // ignore: use_build_context_synchronously
         SnackBarForAll.showSuccess(context, 'Marked as borrowed');
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacement(PageRouteBuilder(
           pageBuilder: (context, anim1, anim2) => const BorrowedBooksList(),
           transitionDuration: Duration.zero,

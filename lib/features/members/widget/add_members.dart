@@ -97,6 +97,7 @@ Future<void> addMemberSelectGender(
                   if (result == true) {
                     returnValue = true;
                   }
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context); 
                 },
                 child: buildPaymentOptionButton(context, 'Cash On Delivery'),

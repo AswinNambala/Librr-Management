@@ -12,6 +12,7 @@ class DbFinishedBookUtils {
     final borrowedBook = Hive.box<BorrowedBookClass>('borrowedBooks');
     await fBook.add(finishedBook);
     await borrowedBook.deleteAt(index);
+    // ignore: use_build_context_synchronously
     navigateTo(const BorrowedBooksList(), context);
   }
 }

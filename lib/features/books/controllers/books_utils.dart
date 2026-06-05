@@ -20,8 +20,10 @@ class BooksUtils {
     if (pickedFile != null) {
       final byte = await pickedFile.readAsBytes();
       onPicked(byte);
+      // ignore: use_build_context_synchronously
       SnackBarForAll.showSuccess(context, 'Image added successfully');
     } else {
+      // ignore: use_build_context_synchronously
       SnackBarForAll.showError(context, 'Failed to add image');
     }
   }
@@ -85,6 +87,7 @@ class BooksUtils {
         final byte = await pickedFile.readAsBytes();
         bookInfo.imageBook = byte;
         onImageUpdated(byte);
+        // ignore: use_build_context_synchronously
         SnackBarForAll.showSuccess(context, 'Image updated');
       }
     }

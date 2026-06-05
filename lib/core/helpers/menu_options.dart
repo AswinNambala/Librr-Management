@@ -114,12 +114,15 @@ class BookPofileOptionsMenu extends StatelessWidget {
           if (confirm == true) {
             if (booksInHand.isEmpty) {
               await bookBox.deleteAt(index);
+              // ignore: use_build_context_synchronously
               Navigator.pop(context);
               SnackBarForAll.showSuccess(
+                // ignore: use_build_context_synchronously
                 context,
                 'book has been deleted.',
               );
             } else {
+              // ignore: use_build_context_synchronously
               errorForBooksInHands(context);
             }
           }
@@ -217,8 +220,10 @@ class _BorrowedBookOptionsMenuState extends State<BorrowedBookOptionsMenu> {
                 widget.borrowedBookData.returnDate);
             finishedBook.add(booksData);
             await widget.borrowedBookBox.deleteAt(widget.index);
+            // ignore: use_build_context_synchronously
             Navigator.pop(context);
             SnackBarForAll.showSuccess(
+              // ignore: use_build_context_synchronously
               context,
               'book has been Returned.',
             );
@@ -375,10 +380,12 @@ class MemberProfileOptionMenu extends StatelessWidget {
             if (booksInHand.isEmpty) {
               await box.deleteAt(index);
               SnackBarForAll.showSuccess(
+                // ignore: use_build_context_synchronously
                 context,
                 '${account.mFirstName} has been deleted.',
               );
             } else {
+              // ignore: use_build_context_synchronously
               errorForBooksInHands(context);
             }
           }

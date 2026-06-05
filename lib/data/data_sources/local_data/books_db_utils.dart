@@ -20,7 +20,9 @@ class DbBooksUtils {
       SnackBarForAll.showError(context, 'Complete all fields');
     } else {
       await bookBox.add(newBook);
+      // ignore: use_build_context_synchronously
       SnackBarForAll.showSuccess(context, 'New book is added to book shelf ');
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(PageRouteBuilder(
         pageBuilder: (context, anim1, anim2) => const ListOfBooks(),
         transitionDuration: Duration.zero,
