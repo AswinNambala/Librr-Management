@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:librrr_management/features/dash%20board/pages/src_home_page.dart';
 import 'package:librrr_management/features/intro%20pages/pages/src_intro_1.dart';
 import 'package:librrr_management/core/const_value.dart';
+import 'package:librrr_management/features/security/controller/auth_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 // splash screen for the Librrr management
-// display splash screen with logo for 2 seconds 
+// display splash screen with logo for 2 seconds
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -36,25 +38,31 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> loading() async {
-    // sharedpreference to decide where to navigate
-    // navigate to intro screen or dashboard screen
-    final sharedPref = await SharedPreferences.getInstance();
-    final shared = sharedPref.getBool(isSelected) ?? false;
+    final accessGranted = await AuthUtils.checkAccess(context);
     await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
 
+    if (!accessGranted) {
+      // stay on splash, or route to a retry/lock screen — your call
+      return;
+    }
+
+    final sharedPref = await SharedPreferences.getInstance();
+    final shared = sharedPref.getBool(isSelected) ?? false;
+    if (!mounted) return;
     if (shared) {
       Navigator.of(context).pushReplacement(PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) =>
-              const DashboardScreen(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero));
+        pageBuilder: (context, animation1, animation2) =>
+            const DashboardScreen(),
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      ));
     } else {
       Navigator.of(context).pushReplacement(PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) =>
-              const IntroScreen1(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero));
+        pageBuilder: (context, animation1, animation2) => const IntroScreen1(),
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      ));
     }
   }
 }
