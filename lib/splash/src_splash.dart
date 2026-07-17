@@ -1,11 +1,11 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:librrr_management/features/dash%20board/pages/src_home_page.dart';
 import 'package:librrr_management/features/intro%20pages/pages/src_intro_1.dart';
 import 'package:librrr_management/core/const_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+// splash screen for the Librrr management
+// display splash screen with logo for 2 seconds 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -36,6 +36,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> loading() async {
+    // sharedpreference to decide where to navigate
+    // navigate to intro screen or dashboard screen
     final sharedPref = await SharedPreferences.getInstance();
     final shared = sharedPref.getBool(isSelected) ?? false;
     await Future.delayed(const Duration(seconds: 2));
