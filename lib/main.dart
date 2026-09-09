@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librrr_management/features/notifications/controllers/notifications_utils.dart';
 import 'package:librrr_management/data/data_sources/local_data/db_main_functions.dart';
 import 'package:librrr_management/splash/src_splash.dart';
@@ -12,7 +13,7 @@ void main() async {
   // await clearDataFromDB();
   await dbInitialize();
   await initializeNotifications();
-  runApp(const MyApp());
+  runApp( const ProviderScope(child: MyApp()));
   log('main is completed');
 }
 

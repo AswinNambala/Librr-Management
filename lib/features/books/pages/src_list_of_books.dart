@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:librrr_management/data/models/books/books%20_class.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librrr_management/features/books/providers/book_providers.dart';
 import 'package:librrr_management/features/books/widgets/book_add_section.dart';
 import 'package:librrr_management/features/books/widgets/book_list_section.dart';
 import 'package:librrr_management/core/helpers/about_test_style.dart';
@@ -9,55 +9,38 @@ import 'package:librrr_management/core/helpers/bottom_nav_bar.dart';
 import 'package:librrr_management/features/dash%20board/pages/src_home_page.dart';
 import 'package:librrr_management/core/helpers/search_text_form_field.dart';
 
-class ListOfBooks extends StatefulWidget {
+class ListOfBooks extends ConsumerStatefulWidget {
   const ListOfBooks({super.key});
 
   @override
-  State<ListOfBooks> createState() => _ListOfBooksState();
+  ConsumerState<ListOfBooks> createState() => _ListOfBooksState();
 }
 
-class _ListOfBooksState extends State<ListOfBooks> {
+class _ListOfBooksState extends ConsumerState<ListOfBooks> {
   final TextEditingController searchText = TextEditingController();
-  final box = Hive.box<BooksClass>('booksDetials');
 
-  bool isGridView = true;
-  List<BooksClass> allBooks = [];
-  List<BooksClass> fliteredBooks = [];
-  String bookNo = '';
-  String? selectedFilterLanguage;
-  String? selectedFilterGenre;
   @override
   void initState() {
     super.initState();
-    allBooks = box.values.toList();
-    fliteredBooks = allBooks;
-    searchText.addListener(applyAllFilters);
-    applyAllFilters();
-    bookNo = fliteredBooks.length.toString();
-  }
-
-  void applyAllFilters() {
-    final query = searchText.text.toLowerCase();
-    setState(() {
-      fliteredBooks = allBooks.where((book) {
-        final matchesSearch = book.booksName.toLowerCase().contains(query) ||
-            book.bookShelf.toLowerCase().contains(query);
-
-        final matchesLanguage = selectedFilterLanguage == null ||
-            book.language == selectedFilterLanguage;
-
-        final matchesGenre = selectedFilterGenre == null ||
-            book.booksGenre == selectedFilterGenre;
-
-        return matchesSearch && matchesLanguage && matchesGenre;
-      }).toList();
-
-      bookNo = fliteredBooks.length.toString();
+    searchText.addListener(() {
+      ref.read(bookSearchQueryProvider.notifier).state = searchText.text;
     });
   }
 
   @override
+  void dispose() {
+    searchText.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Always derived from the live Hive box via filteredBooksProvider —
+    // no more stale snapshot taken once in initState.
+    final fliteredBooks = ref.watch(filteredBooksProvider);
+    final isGridView = ref.watch(bookGridViewProvider);
+    final bookNo = fliteredBooks.length.toString();
+
     return Scaffold(
       appBar: const AppBarForAll(
         appBarTitle: 'Lists of Books',
@@ -90,9 +73,7 @@ class _ListOfBooksState extends State<ListOfBooks> {
                       'Library Books',
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
+                    const SizedBox(height: 4),
                     Text(
                       "$bookNo books available",
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -105,9 +86,8 @@ class _ListOfBooksState extends State<ListOfBooks> {
                       color: Colors.black),
                   child: IconButton(
                       onPressed: () {
-                        setState(() {
-                          isGridView = !isGridView;
-                        });
+                        ref.read(bookGridViewProvider.notifier).state =
+                            !isGridView;
                       },
                       icon: Icon(
                         isGridView ? Icons.list : Icons.grid_view,
@@ -117,26 +97,13 @@ class _ListOfBooksState extends State<ListOfBooks> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             SearchTextFormField(
-              hintText: 'Search books, Id....',
+                hintText: 'Search books, Id....',
                 searchString: searchText,
                 suffixicons: Icons.filter_list_alt,
-                suffixOnPress: () async {
-                  final result = await fliterBookByGenre(context);
-                  if (result != null) {
-                    setState(() {
-                      selectedFilterLanguage = result['language'];
-                      selectedFilterGenre = result['genre'];
-                    });
-                    applyAllFilters();
-                  }
-                }),
-            const SizedBox(
-              height: 15,
-            ),
+                suffixOnPress: () => fliterBookByGenre(context, ref)),
+            const SizedBox(height: 15),
             const BooksListNavSection(),
             Expanded(
               child: LayoutBuilder(builder: (context, constraints) {
@@ -151,36 +118,28 @@ class _ListOfBooksState extends State<ListOfBooks> {
                   crossAxisCount = 3;
                 }
 
-                return ValueListenableBuilder(
-                    valueListenable: box.listenable(),
-                    builder: (context, Box<BooksClass> bookList, _) {
-                      if (fliteredBooks.isEmpty) {
-                        return const Center(
-                          child: Text('No Books available'),
-                        );
-                      }
+                if (fliteredBooks.isEmpty) {
+                  return const Center(child: Text('No Books available'));
+                }
 
-                      return isGridView
-                          ? GridView.builder(
-                              padding: const EdgeInsets.all(12),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: crossAxisCount,
-                                crossAxisSpacing: 15,
-                                mainAxisSpacing: 15,
-                                childAspectRatio: 0.65,
-                              ),
-                              itemCount: fliteredBooks.length,
-                              itemBuilder: (context, index) {
-                                final bookData = fliteredBooks[index];
-                                return booksBuildGridViewBuilder(
-                                    context, bookData, index);
-                              },
-                            )
-                          : BooksListingSection(
-                              fliteredBooks: fliteredBooks,
-                            );
-                    });
+                return isGridView
+                    ? GridView.builder(
+                        padding: const EdgeInsets.all(12),
+                        gridDelegate:
+                            SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: 15,
+                          mainAxisSpacing: 15,
+                          childAspectRatio: 0.65,
+                        ),
+                        itemCount: fliteredBooks.length,
+                        itemBuilder: (context, index) {
+                          final bookData = fliteredBooks[index];
+                          return booksBuildGridViewBuilder(
+                              context, bookData, index);
+                        },
+                      )
+                    : BooksListingSection(fliteredBooks: fliteredBooks);
               }),
             )
           ],

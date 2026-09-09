@@ -20,38 +20,37 @@ class PlanContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      bool isWeb = constraints.maxWidth > 600;
-      return Container(
-        height: 200,
-        width:isWeb? double.infinity : 400,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.9),
-              Theme.of(context).colorScheme.error.withValues(alpha: 0.8)
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 4),
-              blurRadius: 8,
-            )
+    return Container(
+      width: double.infinity, 
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.9),
+            Theme.of(context).colorScheme.error.withValues(alpha: 0.8)
           ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 4),
+            blurRadius: 8,
+          )
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min, 
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Row(
                   children: [
                     if (planIcons != null)
                       Container(
@@ -74,64 +73,64 @@ class PlanContainer extends StatelessWidget {
                         ),
                       ),
                     const SizedBox(width: 10),
-                    Text(
-                      planHead,
-                      style: Theme.of(context).textTheme.titleLarge,
+                    Flexible(
+                      child: Text(
+                        planHead,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
                   ],
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    planPrice,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                const Icon(Icons.check_circle, color: Colors.white70, size: 18),
-                const SizedBox(width: 8),
-                Text(
-                  planDetails1,
-                  style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 6,
                 ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                const Icon(Icons.check_circle, color: Colors.white70, size: 18),
-                const SizedBox(width: 8),
-                Text(
-                  planDetails2,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                decoration: BoxDecoration(
+                  color: Colors.black87,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                const Icon(Icons.check_circle, color: Colors.white70, size: 18),
-                const SizedBox(width: 8),
-                Text(
-                  planDetails3,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                child: Text(
+                  planPrice,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-              ],
-            ),
-          ],
+              )
+            ],
+          ),
+          const SizedBox(height: 16),
+          _PlanDetailRow(text: planDetails1),
+          const SizedBox(height: 8),
+          _PlanDetailRow(text: planDetails2),
+          const SizedBox(height: 8),
+          _PlanDetailRow(text: planDetails3),
+        ],
+      ),
+    );
+  }
+}
+
+class _PlanDetailRow extends StatelessWidget {
+  final String text;
+  const _PlanDetailRow({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Icon(Icons.check_circle, color: Colors.white70, size: 18),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
         ),
-      );
-    });
+      ],
+    );
   }
 }

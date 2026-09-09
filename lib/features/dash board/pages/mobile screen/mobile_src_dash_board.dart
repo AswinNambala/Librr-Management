@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
@@ -29,24 +30,34 @@ class MobileHomeScreen extends StatefulWidget {
 class _MobileHomeScreenState extends State<MobileHomeScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int currentIndex = 1;
-  String? totalBook;
-  String? memberCount;
-  String? availableBook;
-  String? requestBook;
+  String totalBook = '0';
+  String memberCount = '0';
+  String availableBook = '0';
+  String requestBook = '0';
   final notiBox = Hive.box<NotificationClass>('notifications');
+
+  // Keep references to the SAME listenable instances so removeListener
+  // in dispose() actually detaches the right callback.
+  late final ValueListenable<Box<BooksClass>> _booksListenable;
+  late final ValueListenable<Box<BorrowedBookClass>> _borrowedListenable;
+  late final ValueListenable<Box<MemberClass>> _membersListenable;
+  late final ValueListenable<Box<RequestBookClass>> _requestListenable;
 
   @override
   void initState() {
     super.initState();
     loadValues();
-    Hive.box<BooksClass>('booksDetials').listenable().addListener(loadValues);
-    Hive.box<BorrowedBookClass>('borrowedBooks')
-        .listenable()
-        .addListener(loadValues);
-    Hive.box<MemberClass>('members').listenable().addListener(loadValues);
-    Hive.box<RequestBookClass>('requestedBooks')
-        .listenable()
-        .addListener(loadValues);
+
+    _booksListenable = Hive.box<BooksClass>('booksDetials').listenable();
+    _borrowedListenable = Hive.box<BorrowedBookClass>('borrowedBooks').listenable();
+    _membersListenable = Hive.box<MemberClass>('members').listenable();
+    _requestListenable = Hive.box<RequestBookClass>('requestedBooks').listenable();
+
+    _booksListenable.addListener(loadValues);
+    _borrowedListenable.addListener(loadValues);
+    _membersListenable.addListener(loadValues);
+    _requestListenable.addListener(loadValues);
+
     initializeNotifications().then((_) async {
       await NotificationsUtils.checkLateReturnsAndExpiredMemberships();
     });
@@ -57,20 +68,21 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
     final borrowedBox = Hive.box<BorrowedBookClass>('borrowedBooks');
     final memberBox = Hive.box<MemberClass>('members');
     final requestBox = Hive.box<RequestBookClass>('requestedBooks');
-    final int borrowedBook = borrowedBox.length;
-    requestBook = requestBox.length.toString();
+
+    final int borrowedBookCount = borrowedBox.length;
     final int bookLength = bookBox.values.fold(
       0,
-      (sum, element) {
-        return sum + int.parse(element.numberOfBooks);
-      },
+      (sum, element) => sum + (int.tryParse(element.numberOfBooks) ?? 0),
     );
+
+    if (!mounted) return; // guard against post-dispose setState
     setState(() {
       totalBook = bookLength.toString();
-      availableBook = borrowedBook == 0
+      availableBook = borrowedBookCount == 0
           ? bookLength.toString()
-          : (bookLength - borrowedBook).abs().toString();
+          : (bookLength - borrowedBookCount).abs().toString();
       memberCount = memberBox.length.toString();
+      requestBook = requestBox.length.toString();
     });
   }
 
@@ -78,9 +90,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: MobileAppBar(
-        scaffoldKey: scaffoldKey,
-      ),
+      appBar: MobileAppBar(scaffoldKey: scaffoldKey),
       drawer: mobileScreenDrawer(context),
       body: SingleChildScrollView(
         child: Container(
@@ -99,105 +109,111 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Welcome Back, Admin',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                  Expanded(
+                    child: Text(
+                      'Welcome Back, Admin',
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   IconButton(
-                      onPressed: () {
-                        navigateTo(const NotificationScreen(), context);
-                      },
+                      onPressed: () => navigateTo(const NotificationScreen(), context),
                       icon: notiBox.isNotEmpty
-                          ? const Icon(
-                              Icons.notifications,
-                              color: Colors.yellow,
-                              size: 30,
-                            )
-                          : const Icon(
-                              Icons.notifications_off,
-                              color: Colors.yellow,
-                              size: 30,
-                            ))
+                          ? const Icon(Icons.notifications, color: Colors.yellow, size: 30)
+                          : const Icon(Icons.notifications_off, color: Colors.yellow, size: 30))
                 ],
               ),
               Text(
                 DateFormat('EEEE, MMMM d, y').format(DateTime.now()),
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(
-                height: 8,
-              ),
+              const SizedBox(height: 8),
+              // FIX: Expanded on each container so the pair always fits
+              // the available width instead of overflowing on narrow phones.
               Row(
                 children: [
-                  DashBoardContainer(
-                      icon: Icons.book,
-                      subHead: 'Total Books',
-                      boxColor: Colors.pink,
-                      count: totalBook!),
+                  Expanded(
+                    child: DashBoardContainer(
+                        icon: Icons.book,
+                        subHead: 'Total Books',
+                        boxColor: Colors.pink,
+                        count: totalBook),
+                  ),
                   const SizedBox(width: 20),
-                  DashBoardContainer(
-                      boxColor: Colors.blue,
-                      icon: Icons.groups,
-                      subHead: 'Members',
-                      count: memberCount!),
+                  Expanded(
+                    child: DashBoardContainer(
+                        boxColor: Colors.blue,
+                        icon: Icons.groups,
+                        subHead: 'Members',
+                        count: memberCount),
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  DashBoardContainer(
-                      boxColor: Colors.green,
-                      icon: Icons.menu_book_rounded,
-                      subHead: 'Available',
-                      count: availableBook == '0' ? '0' : availableBook!),
+                  Expanded(
+                    child: DashBoardContainer(
+                        boxColor: Colors.green,
+                        icon: Icons.menu_book_rounded,
+                        subHead: 'Available',
+                        count: availableBook),
+                  ),
                   const SizedBox(width: 20),
-                  DashBoardContainer(
-                      boxColor: Colors.orange,
-                      icon: Icons.book_sharp,
-                      subHead: 'Requests',
-                      count: requestBook == null ? '0' : requestBook!),
+                  Expanded(
+                    child: DashBoardContainer(
+                        boxColor: Colors.orange,
+                        icon: Icons.book_sharp,
+                        subHead: 'Requests',
+                        count: requestBook),
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
-              Text('Quick Access',
-                  style: Theme.of(context).textTheme.titleLarge),
+              Text('Quick Access', style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 10),
               Row(
                 children: [
-                  QuickContainer(
-                    boxColor: Colors.pink,
-                    icon: Icons.chrome_reader_mode_outlined,
-                    subHead: 'Membership Plan',
-                    navigate: () => navigateTo(const MembershipPlan(), context),
+                  Expanded(
+                    child: QuickContainer(
+                      boxColor: Colors.pink,
+                      icon: Icons.chrome_reader_mode_outlined,
+                      subHead: 'Membership Plan',
+                      navigate: () => navigateTo(const MembershipPlan(), context),
+                    ),
                   ),
                   const SizedBox(width: 20),
-                  QuickContainer(
-                      boxColor: Colors.blue,
-                      icon: Icons.menu_book_sharp,
-                      subHead: 'Books List',
-                      navigate: () => navigateTo(const ListOfBooks(), context)),
+                  Expanded(
+                    child: QuickContainer(
+                        boxColor: Colors.blue,
+                        icon: Icons.menu_book_sharp,
+                        subHead: 'Books List',
+                        navigate: () => navigateTo(const ListOfBooks(), context)),
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  QuickContainer(
-                    boxColor: Colors.green,
-                    icon: Icons.content_paste_go_rounded,
-                    subHead: 'Request Book',
-                    navigate: () =>
-                        navigateTo(const RequestBookScreen(), context),
+                  Expanded(
+                    child: QuickContainer(
+                      boxColor: Colors.green,
+                      icon: Icons.content_paste_go_rounded,
+                      subHead: 'Request Book',
+                      navigate: () => navigateTo(const RequestBookScreen(), context),
+                    ),
                   ),
                   const SizedBox(width: 20),
-                  QuickContainer(
-                    boxColor: Colors.orange,
-                    icon: Icons.local_library_rounded,
-                    subHead: 'Borrowed Books List',
-                    navigate: () =>
-                        navigateTo(const BorrowedBooksList(), context),
+                  Expanded(
+                    child: QuickContainer(
+                      boxColor: Colors.orange,
+                      icon: Icons.local_library_rounded,
+                      subHead: 'Borrowed Books List',
+                      navigate: () => navigateTo(const BorrowedBooksList(), context),
+                    ),
                   ),
                 ],
               ),
@@ -217,14 +233,10 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
 
   @override
   void dispose() {
+    _booksListenable.removeListener(loadValues);
+    _borrowedListenable.removeListener(loadValues);
+    _membersListenable.removeListener(loadValues);
+    _requestListenable.removeListener(loadValues);
     super.dispose();
-    Hive.box<BooksClass>('booksDetials').listenable().addListener(loadValues);
-    Hive.box<BorrowedBookClass>('borrowedBooks')
-        .listenable()
-        .addListener(loadValues);
-    Hive.box<MemberClass>('members').listenable().addListener(loadValues);
-    Hive.box<RequestBookClass>('requestedBooks')
-        .listenable()
-        .addListener(loadValues);
   }
 }

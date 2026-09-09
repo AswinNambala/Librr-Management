@@ -12,7 +12,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,11 +36,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 );
               });
             });
-   
+
             return isWeb
                 ? const Wrap(
                     spacing: 15,
                     runSpacing: 10,
+                    alignment: WrapAlignment.center,
                     children: [
                       Row(
                         children: [
@@ -91,60 +91,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 : const Center(
                     child: Wrap(
                       spacing: 15,
-                      runSpacing: 10,
+                      runSpacing: 15,
                       alignment: WrapAlignment.center,
                       children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            ShimmerDashBoardContainer(),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            ShimmerDashBoardContainer()
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            ShimmerDashBoardContainer(),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            ShimmerDashBoardContainer()
-                          ],
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            ShimmerDashBoardContainer(),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            ShimmerDashBoardContainer()
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            ShimmerDashBoardContainer(),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            ShimmerDashBoardContainer()
-                          ],
-                        ),
+                        ShimmerDashBoardContainer(),
+                        ShimmerDashBoardContainer(),
+                        ShimmerDashBoardContainer(),
+                        ShimmerDashBoardContainer(),
                       ],
                     ),
                   );

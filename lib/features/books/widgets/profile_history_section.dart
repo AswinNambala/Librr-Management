@@ -264,12 +264,13 @@ class BooksProfileSection extends StatefulWidget {
   final int index;
   final bool isWeb;
   final List<BorrowedBookClass> booksInHand;
-  const BooksProfileSection(
-      {super.key,
-      required this.bookInfo,
-      required this.isWeb,
-      required this.booksInHand,
-      required this.index});
+  const BooksProfileSection({
+    super.key,
+    required this.bookInfo,
+    required this.isWeb,
+    required this.booksInHand,
+    required this.index,
+  });
 
   @override
   State<BooksProfileSection> createState() => _BooksProfileSectionState();
@@ -277,117 +278,154 @@ class BooksProfileSection extends StatefulWidget {
 
 class _BooksProfileSectionState extends State<BooksProfileSection> {
   int booksStock = 0;
+
   @override
   void initState() {
     super.initState();
-    booksStock = int.parse(widget.bookInfo.numberOfBooks);
+    _syncStock();
+  }
+
+  @override
+  void didUpdateWidget(covariant BooksProfileSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.bookInfo.numberOfBooks != widget.bookInfo.numberOfBooks) {
+      _syncStock();
+    }
+  }
+
+  void _syncStock() {
+    booksStock = int.tryParse(widget.bookInfo.numberOfBooks) ?? 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: widget.isWeb ? 200 : 110,
-          width: widget.isWeb ? 200 : 110,
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withValues(alpha: 0.3),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                )
-              ],
-              shape: BoxShape.circle),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(80),
-            child: widget.bookInfo.imageBook != null
-                ? Image.memory(
-                    widget.bookInfo.imageBook!,
-                    fit: BoxFit.cover,
-                  )
-                : Icon(
-                    Icons.book,
-                    color:
-                        Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
-                    size: 35,
-                  ),
-          ),
-        ),
-        const SizedBox(
-          width: 20,
-        ),
-        Column(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double width = constraints.maxWidth;
+        final double avatarSize =
+            widget.isWeb ? 200 : (width * 0.28).clamp(80, 130).toDouble();
+        final double headlineFont =
+            widget.isWeb ? 22 : (width * 0.05).clamp(16, 20).toDouble();
+        final double badgeHeight =
+            widget.isWeb ? 40 : (width * 0.07).clamp(24, 30).toDouble();
+
+        return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.bookInfo.booksName,
-              style: Theme.of(context).textTheme.headlineSmall,
+            Container(
+              height: avatarSize,
+              width: avatarSize,
+              decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .colorScheme
+                    .primary
+                    .withValues(alpha: 0.3),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withValues(alpha: 0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                  )
+                ],
+                shape: BoxShape.circle,
+              ),
+              child: ClipOval(
+                child: widget.bookInfo.imageBook != null
+                    ? Image.memory(
+                        widget.bookInfo.imageBook!,
+                        fit: BoxFit.cover,
+                      )
+                    : Icon(
+                        Icons.book,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withValues(alpha: 0.8),
+                        size: avatarSize * 0.3,
+                      ),
+              ),
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            Text(
-              widget.bookInfo.authorName,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(
-              widget.bookInfo.bookShelf,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: [
-                Container(
-                  width: widget.isWeb ? 150 : 100,
-                  height: widget.isWeb ? 40 : 25,
-                  decoration: BoxDecoration(
-                    color: booksStock >= 1? Colors.green : Colors.red,
-                    borderRadius: BorderRadius.circular(20),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.bookInfo.booksName,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontSize: headlineFont),
                   ),
-                  child: Center(
-                    child: Text(
-                     booksStock >= 1
-                          ? 'Available'
-                          : 'No Stock',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.bookInfo.authorName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                ),
-                SizedBox(
-                  width: widget.isWeb ? 30 : 15,
-                ),
-                InkWell(
-                  onTap: () {
-                    booksProfileBottomSheet(context, widget.bookInfo,
-                        widget.index, widget.booksInHand);
-                  },
-                  child: Container(
-                    width: widget.isWeb ? 150 : 110,
-                    height: widget.isWeb ? 40 : 28,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onTertiary,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Center(
-                        child: Text(
-                      'View Details',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    )),
+                  const SizedBox(height: 5),
+                  Text(
+                    widget.bookInfo.bookShelf,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                )
-              ],
-            )
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: widget.isWeb ? 30 : 12,
+                    runSpacing: 8,
+                    children: [
+                      Container(
+                        constraints: BoxConstraints(
+                          minWidth: widget.isWeb ? 150 : 80,
+                        ),
+                        height: badgeHeight,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: booksStock >= 1 ? Colors.green : Colors.red,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                          child: Text(
+                            booksStock >= 1 ? 'Available' : 'No Stock',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          booksProfileBottomSheet(context, widget.bookInfo,
+                              widget.index, widget.booksInHand);
+                        },
+                        child: Container(
+                          constraints: BoxConstraints(
+                            minWidth: widget.isWeb ? 150 : 100,
+                          ),
+                          height: badgeHeight,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.onTertiary,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'View Details',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
-        )
-      ],
+        );
+      },
     );
   }
 }
