@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:librrr_management/data/models/borrowed_books/borrowed_book_class.dart';
 import 'package:librrr_management/data/models/members/members_class.dart';
+import 'package:librrr_management/features/borrowed%20books/providers/borrowed_book_providers.dart';
 
 class BorrowedBookUtils {
   // all borrowed book adding functions
@@ -48,10 +49,7 @@ class BorrowedBookUtils {
   // function for list of borrowed books
   static int borrowedBookRemainingDateCalculate(
       BuildContext context, BorrowedBookClass borBooks) {
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final DateTime expireDate = formatter.parse(borBooks.returnDate);
-    final int remainDate = expireDate.difference(DateTime.now()).inDays;
-    return remainDate;
+    return borrowedBookRemainingDays(borBooks.returnDate) ?? 9999;
   }
 
 // members number of books validity per month check vailidity for borrowing books
@@ -67,7 +65,7 @@ class BorrowedBookUtils {
 
     return count < numbooks;
   }
-// add borrowed books checking members plan validity period 
+// add borrowed books checking members plan validity period
 
   static Future<void> showNoteMemberValidityExceeded(
       BuildContext context) async {
@@ -84,9 +82,7 @@ class BorrowedBookUtils {
               ),
               actions: [
                 TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: () => Navigator.pop(context),
                     child: Text(
                       'Ok',
                       style: Theme.of(context).textTheme.bodyMedium,

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:intl/intl.dart';
 import 'package:librrr_management/data/models/borrowed_books/borrowed_book_class.dart';
+import 'package:librrr_management/features/borrowed%20books/providers/borrowed_book_providers.dart';
 import 'package:librrr_management/core/helpers/menu_options.dart';
 
 // bottom sheet for borrowed book profile to view profile full detials
+
 void borrowedBooksProfileBottomSheet(
     BuildContext context, BorrowedBookClass books, int keyIndex) {
-  final DateFormat formatter = DateFormat('dd-MM-yyyy');
-  final DateTime expireDate = formatter.parse(books.returnDate);
-  final int remainDate = expireDate.difference(DateTime.now()).inDays;
-  int nRemainingDate = remainDate.abs();
+  final int? remainDateNullable = borrowedBookRemainingDays(books.returnDate);
+  final int remainDate = remainDateNullable ?? 9999;
+  final int nRemainingDate = remainDate.abs();
 
   showModalBottomSheet(
     context: context,
@@ -65,9 +65,13 @@ void borrowedBooksProfileBottomSheet(
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            books.bookName,
-                            style: Theme.of(context).textTheme.titleLarge,
+                          Expanded(
+                            child: Text(
+                              books.bookName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
                           ),
                           BorrowedBookOptionsMenu(
                             remainDays: remainDate,
@@ -93,41 +97,29 @@ void borrowedBooksProfileBottomSheet(
             const Divider(),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title:  Text("Language", style: Theme.of(context).textTheme.bodyLarge,),
-              trailing: Text(
-                books.bookLanguage,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              title: Text("Language", style: Theme.of(context).textTheme.bodyLarge),
+              trailing: Text(books.bookLanguage, style: Theme.of(context).textTheme.bodyLarge),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title:  Text("Member Name", style: Theme.of(context).textTheme.bodyLarge,),
-              trailing: Text(
-                books.memberName,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              title: Text("Member Name", style: Theme.of(context).textTheme.bodyLarge),
+              trailing: Text(books.memberName, style: Theme.of(context).textTheme.bodyLarge),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title:  Text("Member ID", style: Theme.of(context).textTheme.bodyLarge,),
-              trailing: Text(
-                books.memberId,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              title: Text("Member ID", style: Theme.of(context).textTheme.bodyLarge),
+              trailing: Text(books.memberId, style: Theme.of(context).textTheme.bodyLarge),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title:  Text("Return Date", style: Theme.of(context).textTheme.bodyLarge,),
-              trailing: Text(
-                books.returnDate,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              title: Text("Return Date", style: Theme.of(context).textTheme.bodyLarge),
+              trailing: Text(books.returnDate, style: Theme.of(context).textTheme.bodyLarge),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title:  Text("Remaining Days", style: Theme.of(context).textTheme.bodyLarge,),
-              trailing: Text(remainDate > 1?
-                "$remainDate days to return" : '$nRemainingDate days late',
+              title: Text("Remaining Days", style: Theme.of(context).textTheme.bodyLarge),
+              trailing: Text(
+                remainDate > 1 ? "$remainDate days to return" : '$nRemainingDate days late',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
