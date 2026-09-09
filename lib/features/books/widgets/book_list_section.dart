@@ -119,13 +119,9 @@ class _BooksListingSectionState extends State<BooksListingSection> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: bookData.imageBook == null
-                      ? const Icon(Icons.person)
-                      : Image.memory(
-                          bookData.imageBook!,
-                          fit: BoxFit.cover,
-                          height: 40,
-                          width: 40,
-                        ),
+                      ? const Icon(Icons.menu_book)
+                      : Image.memory(bookData.imageBook!,
+                          fit: BoxFit.cover, height: 40, width: 40),
                 ),
               ),
               title: Text(
@@ -176,132 +172,127 @@ class _BooksListingSectionState extends State<BooksListingSection> {
   }
 }
 
-// list of books girdview design 
+// list of books girdview design
 Widget booksBuildGridViewBuilder(
-      BuildContext context, BooksClass bookInfo, int index) {
-    return InkWell(
-      onTap: () {
-        navigateTo(
-            BooksProfileScreen(
-              bookInfo: bookInfo,
-              index: index,
-            ),
-            context);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Theme.of(context).cardTheme.color,
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 4,
-              offset: Offset(2, 2),
-            )
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 3,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Theme.of(context).colorScheme.onTertiary,
-                  borderRadius:const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)),
-                ),
-                child: bookInfo.imageBook == null
-                    ? const Icon(Icons.person, size: 30)
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.memory(
-                          bookInfo.imageBook!,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(bottom: 5, left: 8, right: 8, top: 5),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          bookInfo.booksName,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(bookInfo.authorName,
-                            style: Theme.of(context).textTheme.bodySmall),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: bookInfo.numberOfBooks != '0'
-                                  ? Text(
-                                      'Available',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall,
-                                    )
-                                  : Text(
-                                      'Out of Stock',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall,
-                                    ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                navigateTo(
-                                    EditBooks(
-                                        editBookInfo: bookInfo, index: index),
-                                    context);
-                              },
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.red,
-                                size: 20,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            
-                          ],
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
+    BuildContext context, BooksClass bookInfo, int index) {
+  return InkWell(
+    onTap: () {
+      navigateTo(
+          BooksProfileScreen(
+            bookInfo: bookInfo,
+            index: index,
+          ),
+          context);
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Theme.of(context).cardTheme.color,
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(2, 2),
+          )
+        ],
       ),
-    );
-  }
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Theme.of(context).colorScheme.onTertiary,
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10)),
+              ),
+              child: bookInfo.imageBook == null
+                  ? const Icon(Icons.menu_book, size: 30)
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child:
+                          Image.memory(bookInfo.imageBook!, fit: BoxFit.cover),
+                    ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(bottom: 5, left: 8, right: 8, top: 5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        bookInfo.booksName,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(bookInfo.authorName,
+                          style: Theme.of(context).textTheme.bodySmall),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: bookInfo.numberOfBooks != '0'
+                                ? Text(
+                                    'Available',
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
+                                  )
+                                : Text(
+                                    'Out of Stock',
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
+                                  ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              navigateTo(
+                                  EditBooks(
+                                      editBookInfo: bookInfo, index: index),
+                                  context);
+                            },
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.red,
+                              size: 20,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}
