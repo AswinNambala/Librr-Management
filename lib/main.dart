@@ -5,6 +5,7 @@ import 'package:librrr_management/data/data_sources/local_data/db_main_functions
 import 'package:librrr_management/splash/src_splash.dart';
 import 'package:librrr_management/core/theme_class_notifier.dart';
 
+// riverpod added to book db
 // feature-first architecture is used in this project
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

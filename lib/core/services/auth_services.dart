@@ -1,6 +1,8 @@
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 
+// checking device suppport security feature 
+// finger print scanner, parttern, face security, etc. 
 class AuthService {
   final LocalAuthentication _auth = LocalAuthentication();
 
