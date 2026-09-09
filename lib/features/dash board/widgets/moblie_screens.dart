@@ -13,7 +13,7 @@ import 'package:librrr_management/core/helpers/about_test_style.dart';
 // appbar of mobile screen home page
 class MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
- const MobileAppBar({super.key, required this.scaffoldKey});
+  const MobileAppBar({super.key, required this.scaffoldKey});
 
   @override
   Size get preferredSize => const Size.fromHeight(65);
@@ -47,20 +47,20 @@ class MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Theme.of(context).colorScheme.secondary
                 ]),
                 borderRadius: BorderRadius.circular(12)),
-            child: Image.asset(
-              "assets/home icons.png",
-            ),
+            child: Image.asset("assets/home icons.png"),
           ),
-          const SizedBox(
-            width: 8,
-          ),
-          const Text(
-            'Librr Management',
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 24,
-              letterSpacing: 1,
-              color: Colors.white,
+          const SizedBox(width: 8),
+          const Expanded(
+            child: Text(
+              'Librr Management',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 24,
+                letterSpacing: 1,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -70,7 +70,8 @@ class MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 12),
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
+              color:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
               shape: BoxShape.circle,
             ),
             child: IconButton(

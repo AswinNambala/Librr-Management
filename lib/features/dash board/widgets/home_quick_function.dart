@@ -22,14 +22,12 @@ class QuickContainer extends StatelessWidget {
       splashColor: Colors.deepPurple.withValues(alpha: 0.2),
       child: Container(
         height: 150,
-        width: 180,
+        width: double.infinity, 
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-          boxColor!.withValues(alpha: 0.2) , boxColor!.withValues(alpha: 0.25)
+            gradient: LinearGradient(begin: Alignment.topRight, end: Alignment.bottomLeft, colors: [
+          boxColor!.withValues(alpha: 0.2),
+          boxColor!.withValues(alpha: 0.25)
         ]),
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [
@@ -44,17 +42,20 @@ class QuickContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-                icon,
-                size: 30,
-                color: boxColor,
-              ),
+              icon,
+              size: 30,
+              color: boxColor,
+            ),
             const SizedBox(height: 12),
             Text(
               subHead,
-             style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(color: boxColor),
+              textAlign: TextAlign.center,   
+              maxLines: 2,                   
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(color: boxColor),
             ),
           ],
         ),

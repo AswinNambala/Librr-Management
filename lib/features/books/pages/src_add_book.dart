@@ -244,13 +244,13 @@ class _AddBooksState extends ConsumerState<AddBooks> {
                   ),
                   const SizedBox(height: 20),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               fixedSize: isWeb
                                   ? const Size(400, 50)
-                                  : const Size(170, 40),
+                                  : const Size(140, 30),
                               backgroundColor:
                                   Colors.black.withValues(alpha: 0.8)),
                           onPressed: () => Navigator.pop(context),
@@ -265,7 +265,7 @@ class _AddBooksState extends ConsumerState<AddBooks> {
                           style: ElevatedButton.styleFrom(
                             fixedSize: isWeb
                                 ? const Size(400, 50)
-                                : const Size(170, 40),
+                                : const Size(140, 30),
                             backgroundColor: Colors.red.withValues(alpha: 0.8),
                           ),
                           onPressed: _onSave,

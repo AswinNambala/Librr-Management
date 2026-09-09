@@ -94,7 +94,7 @@ class _RequestBookScreenState extends State<RequestBookScreen> {
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           fixedSize:
-                              isWeb ? const Size(400, 50) : const Size(170, 40),
+                              isWeb ? const Size(400, 50) : const Size(140, 30),
                           backgroundColor: Colors.red.withValues(alpha: 0.8)),
                       onPressed: () {
                         final rbooksInfo = RequestBookClass(

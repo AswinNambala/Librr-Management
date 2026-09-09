@@ -18,45 +18,44 @@ class DashBoardContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 160,
-      width: 180,
+      // width removed — the parent now controls width via Expanded
+      width: double.infinity,
       padding: const EdgeInsets.only(top: 15, right: 15, left: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [boxColor!.withValues(alpha: 0.2), boxColor!.withValues(alpha: 0.25)]),
+            colors: [
+              boxColor!.withValues(alpha: 0.2),
+              boxColor!.withValues(alpha: 0.25)
+            ]),
         boxShadow: const [
-          BoxShadow(
-            color: Colors.black26,
-            offset: Offset(2, 6),
-            blurRadius: 10,
-          ),
+          BoxShadow(color: Colors.black26, offset: Offset(2, 6), blurRadius: 10),
         ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                icon,
-                size: 30,
-                color: boxColor,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                subHead,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(color: boxColor),
-              )
-            ],
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, size: 30, color: boxColor),
+                const SizedBox(height: 5),
+                Text(
+                  subHead,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(color: boxColor),
+                ),
+              ],
+            ),
           ),
           Text(
             count,
@@ -72,9 +71,7 @@ class DashBoardContainer extends StatelessWidget {
   }
 }
 
-
-// shimmer effect
-
+// shimmer_dashboard_container.dart (or wherever it lives)
 class ShimmerDashBoardContainer extends StatelessWidget {
   const ShimmerDashBoardContainer({super.key});
 
@@ -82,7 +79,7 @@ class ShimmerDashBoardContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 160,
-      width: 180,
+      width: 180, 
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.grey[300],
