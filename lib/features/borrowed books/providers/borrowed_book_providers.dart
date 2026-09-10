@@ -5,14 +5,17 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 import 'package:librrr_management/data/models/books/books%20_class.dart';
 import 'package:librrr_management/data/models/borrowed_books/borrowed_book_class.dart';
+import 'package:librrr_management/data/models/finished_books/finished_book_class.dart';
 import 'package:librrr_management/data/models/members/members_class.dart';
 import 'package:librrr_management/data/respository/book_respository.dart';
 import 'package:librrr_management/data/respository/borrowed_book_respository.dart';
+import 'package:librrr_management/data/respository/finished_book_respository.dart';
 import 'package:librrr_management/data/respository/member_respository.dart';
 
 // Repositories
 
-final borrowedBooksRepositoryProvider = Provider<BorrowedBooksRepository>((ref) {
+final borrowedBooksRepositoryProvider =
+    Provider<BorrowedBooksRepository>((ref) {
   return BorrowedBooksRepository(Hive.box<BorrowedBookClass>('borrowedBooks'));
 });
 
@@ -24,6 +27,10 @@ final booksRepositoryProvider = Provider<BooksRepository>((ref) {
   return BooksRepository(Hive.box<BooksClass>('booksDetials'));
 });
 
+final finishedBooksRepositoryProvider =
+    Provider<FinishedBooksRepository>((ref) {
+  return FinishedBooksRepository(Hive.box<FinishedBookClass>('finishedBooks'));
+});
 
 final borrowedBooksListProvider =
     StateNotifierProvider<BorrowedBooksListNotifier, List<BorrowedBookClass>>(
@@ -63,6 +70,22 @@ class BorrowedBooksListNotifier extends StateNotifier<List<BorrowedBookClass>> {
         book.returnDate == 'null-null-null') {
       return 'Complete all fields';
     }
+    Future<void> markBookReturned(
+      BorrowedBookClass book,
+      FinishedBooksRepository finishedRepo,
+    ) async {
+      final finishedBook = FinishedBookClass(
+        book.bookName,
+        book.bookId,
+        book.memberId,
+        book.memberName,
+        '',
+        book.returnDate,
+      );
+      await finishedRepo.add(finishedBook);
+      await book.delete(); 
+      await _booksRepo.incrementStock(book.bookId);
+    }
 
     final member = _membersRepo.findById(book.memberId);
     if (member == null) {
@@ -72,7 +95,7 @@ class BorrowedBooksListNotifier extends StateNotifier<List<BorrowedBookClass>> {
     final quota = _membersRepo.booksPerMonthFor(book.memberId);
     final activeCount = _borrowedRepo.activeCountForMember(book.memberId);
     if (activeCount >= quota) {
-      return 'MEMBER_LIMIT_EXCEEDED'; 
+      return 'MEMBER_LIMIT_EXCEEDED';
     }
 
     final stockOk = await _booksRepo.decrementStock(book.bookId);
@@ -89,6 +112,8 @@ class BorrowedBooksListNotifier extends StateNotifier<List<BorrowedBookClass>> {
     _sub.cancel();
     super.dispose();
   }
+
+  Future<void> markBookReturned(BorrowedBookClass borrowedBookData, FinishedBooksRepository finishedRepo) async {}
 }
 
 // List screen UI state
@@ -125,7 +150,6 @@ final memberLookupProvider =
     expireDate: member.mExpireDate,
   );
 });
-
 
 final _dateFormatter = DateFormat('dd-MM-yyyy');
 

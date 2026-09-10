@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:librrr_management/features/about/pages/src_about.dart';
 import 'package:librrr_management/features/books/pages/src_add_book.dart';
 import 'package:librrr_management/features/books/pages/src_list_of_books.dart';
-import 'package:librrr_management/features/late_entry/page/src_late_entry_book.dart';
 import 'package:librrr_management/features/members/pages/src_add_members.dart';
 import 'package:librrr_management/features/qr%20code/pages/qr_code.dart';
 import 'package:librrr_management/view/borrowed%20books/pages/src_borrowed_lists.dart';
@@ -93,7 +92,6 @@ class _WebMenuSectionState extends State<WebMenuSection> {
     {'title': 'Books Lists', 'widget': const ListOfBooks()},
     {'title': 'List of Reqested Book', 'widget': const ListOfRequestBook()},
     {'title': 'List of Borrowed Book', 'widget': const BorrowedBooksList()},
-    {'title': 'Late Book Entry', 'widget': const LateEntryBooks()},
     {'title': 'Add Book', 'widget': const AddBooks()},
     {'title': 'Add Member', 'widget': const AddMembersSCreen()},
     {'title': 'Setting', 'widget': const SettingScreen()},

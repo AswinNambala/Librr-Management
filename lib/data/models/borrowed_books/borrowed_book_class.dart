@@ -2,7 +2,7 @@
 import 'package:hive_flutter/adapters.dart';
     part 'borrowed_book_class.g.dart';
     @HiveType(typeId: 2)
-class BorrowedBookClass {
+class BorrowedBookClass extends HiveObject {
   @HiveField(0)
   late String bookId;
   @HiveField(1)

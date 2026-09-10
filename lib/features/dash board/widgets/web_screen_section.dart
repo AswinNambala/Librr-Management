@@ -4,7 +4,6 @@ import 'package:librrr_management/features/books/pages/src_add_book.dart';
 import 'package:librrr_management/features/books/pages/src_list_of_books.dart';
 import 'package:librrr_management/features/borrowed%20books/pages/src_borrowed_lists.dart';
 import 'package:librrr_management/features/dash%20board/pages/web%20screen/web_src_dashboard.dart';
-import 'package:librrr_management/features/late_entry/page/src_late_entry_book.dart';
 import 'package:librrr_management/features/members/pages/src_add_members.dart';
 import 'package:librrr_management/features/members/pages/src_member_list.dart';
 import 'package:librrr_management/features/members/pages/src_membership_plan.dart';
@@ -93,7 +92,6 @@ class _WebMenuSectionState extends State<WebMenuSection> {
     {'title': 'Books Lists', 'widget': const ListOfBooks()},
     {'title': 'List of Reqested Book', 'widget': const ListOfRequestBook()},
     {'title': 'List of Borrowed Book', 'widget': const BorrowedBooksList()},
-    {'title': 'Late Book Entry', 'widget': const LateEntryBooks()},
     {'title': 'Add Book', 'widget': const AddBooks()},
     {'title': 'Add Member', 'widget': const AddMembersSCreen()},
     {'title': 'Setting', 'widget': const SettingScreen()},

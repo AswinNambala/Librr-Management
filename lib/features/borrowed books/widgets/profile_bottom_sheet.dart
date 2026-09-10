@@ -79,6 +79,8 @@ void borrowedBooksProfileBottomSheet(
                             index: keyIndex,
                             borrowedBookBox:
                                 Hive.box<BorrowedBookClass>('borrowedBooks'),
+                            closeParentSheetOnReturn:
+                                true,
                           ),
                         ],
                       ),
@@ -97,29 +99,40 @@ void borrowedBooksProfileBottomSheet(
             const Divider(),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text("Language", style: Theme.of(context).textTheme.bodyLarge),
-              trailing: Text(books.bookLanguage, style: Theme.of(context).textTheme.bodyLarge),
+              title: Text("Language",
+                  style: Theme.of(context).textTheme.bodyLarge),
+              trailing: Text(books.bookLanguage,
+                  style: Theme.of(context).textTheme.bodyLarge),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text("Member Name", style: Theme.of(context).textTheme.bodyLarge),
-              trailing: Text(books.memberName, style: Theme.of(context).textTheme.bodyLarge),
+              title: Text("Member Name",
+                  style: Theme.of(context).textTheme.bodyLarge),
+              trailing: Text(books.memberName,
+                  style: Theme.of(context).textTheme.bodyLarge),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text("Member ID", style: Theme.of(context).textTheme.bodyLarge),
-              trailing: Text(books.memberId, style: Theme.of(context).textTheme.bodyLarge),
+              title: Text("Member ID",
+                  style: Theme.of(context).textTheme.bodyLarge),
+              trailing: Text(books.memberId,
+                  style: Theme.of(context).textTheme.bodyLarge),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text("Return Date", style: Theme.of(context).textTheme.bodyLarge),
-              trailing: Text(books.returnDate, style: Theme.of(context).textTheme.bodyLarge),
+              title: Text("Return Date",
+                  style: Theme.of(context).textTheme.bodyLarge),
+              trailing: Text(books.returnDate,
+                  style: Theme.of(context).textTheme.bodyLarge),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text("Remaining Days", style: Theme.of(context).textTheme.bodyLarge),
+              title: Text("Remaining Days",
+                  style: Theme.of(context).textTheme.bodyLarge),
               trailing: Text(
-                remainDate > 1 ? "$remainDate days to return" : '$nRemainingDate days late',
+                remainDate > 1
+                    ? "$remainDate days to return"
+                    : '$nRemainingDate days late',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),

@@ -67,7 +67,9 @@ Widget borrowedBuildGridViewBuilder(
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5,),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -135,7 +137,11 @@ class _BorrowedBooksListingSectionState
             },
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            leading: const CircleAvatar(child: Icon(Icons.book, color: Colors.white,)),
+            leading: const CircleAvatar(
+                child: Icon(
+              Icons.book,
+              color: Colors.white,
+            )),
             title: Text(
               borrowedBookData.bookName,
               style: Theme.of(context).textTheme.bodyLarge,
@@ -169,6 +175,7 @@ class _BorrowedBooksListingSectionState
               borrowedBookData: borrowedBookData,
               index: index,
               borrowedBookBox: Hive.box<BorrowedBookClass>('borrowedBooks'),
+              closeParentSheetOnReturn: false, 
             ),
           ),
         );

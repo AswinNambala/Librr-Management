@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:librrr_management/data/models/books/books%20_class.dart';
 import 'package:librrr_management/data/models/borrowed_books/borrowed_book_class.dart';
-import 'package:librrr_management/data/models/finished_books/finished_book_class.dart';
 import 'package:librrr_management/data/models/members/members_class.dart';
 import 'package:librrr_management/features/books/pages/src_edit_book.dart';
+import 'package:librrr_management/features/borrowed%20books/providers/borrowed_book_providers.dart';
 import 'package:librrr_management/features/late_entry/page/src_late_entry_book.dart';
 import 'package:librrr_management/features/books/pages/src_list_of_books.dart';
 import 'package:librrr_management/features/members/pages/src_edit_members.dart';
@@ -149,26 +150,31 @@ class BookPofileOptionsMenu extends StatelessWidget {
 }
 
 // this popup menu is only for borrowed book class models
-class BorrowedBookOptionsMenu extends StatefulWidget {
+class BorrowedBookOptionsMenu extends ConsumerStatefulWidget {
   final BorrowedBookClass borrowedBookData;
   final int index;
   final Box<BorrowedBookClass> borrowedBookBox;
   final int remainDays;
+  final bool closeParentSheetOnReturn;
 
-  const BorrowedBookOptionsMenu(
-      {super.key,
-      required this.borrowedBookData,
-      required this.index,
-      required this.borrowedBookBox,
-      required this.remainDays});
+  const BorrowedBookOptionsMenu({
+    super.key,
+    required this.borrowedBookData,
+    required this.index,
+    required this.borrowedBookBox,
+    required this.remainDays,
+    this.closeParentSheetOnReturn = false,
+  });
 
   @override
-  State<BorrowedBookOptionsMenu> createState() =>
+  ConsumerState<BorrowedBookOptionsMenu> createState() =>
       _BorrowedBookOptionsMenuState();
 }
 
-class _BorrowedBookOptionsMenuState extends State<BorrowedBookOptionsMenu> {
-  int? daysBalance;
+class _BorrowedBookOptionsMenuState
+    extends ConsumerState<BorrowedBookOptionsMenu> {
+  late int daysBalance;
+
   @override
   void initState() {
     super.initState();
@@ -176,7 +182,52 @@ class _BorrowedBookOptionsMenuState extends State<BorrowedBookOptionsMenu> {
   }
 
   @override
+  void didUpdateWidget(covariant BorrowedBookOptionsMenu oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.remainDays != widget.remainDays) {
+      daysBalance = widget.remainDays;
+    }
+  }
+
+  Future<void> _onBookReturned() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Return'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Returned', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true) return;
+
+    final finishedRepo = ref.read(finishedBooksRepositoryProvider);
+    await ref
+        .read(borrowedBooksListProvider.notifier)
+        .markBookReturned(widget.borrowedBookData, finishedRepo);
+
+    if (!mounted) return;
+
+    if (widget.closeParentSheetOnReturn) {
+      Navigator.pop(context);
+    }
+
+    if (!mounted) return;
+    SnackBarForAll.showSuccess(context, 'book has been Returned.');
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final bool isLate = daysBalance <= 0;
+
     return PopupMenuButton<String>(
       iconColor: Colors.white,
       onSelected: (value) async {
@@ -184,86 +235,26 @@ class _BorrowedBookOptionsMenuState extends State<BorrowedBookOptionsMenu> {
           navigateTo(
               LateEntryBooks(
                 borrowedBookDetails: widget.borrowedBookData,
-                index: widget.index,
               ),
               context);
         } else if (value == 'Book Returned') {
-          final confirm = await showDialog<bool>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Confirm Return'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: const Text(
-                    'Returned',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              ],
-            ),
-          );
-
-          if (confirm == true) {
-            debugPrint('adding loading....');
-            final finishedBook = Hive.box<FinishedBookClass>('finishedBooks');
-            final booksData = FinishedBookClass(
-                widget.borrowedBookData.bookName,
-                widget.borrowedBookData.bookId,
-                widget.borrowedBookData.memberId,
-                widget.borrowedBookData.memberName,
-                '',
-                widget.borrowedBookData.returnDate);
-            finishedBook.add(booksData);
-            await widget.borrowedBookBox.deleteAt(widget.index);
-            // ignore: use_build_context_synchronously
-            Navigator.pop(context);
-            SnackBarForAll.showSuccess(
-              // ignore: use_build_context_synchronously
-              context,
-              'book has been Returned.',
-            );
-            final bookBox = Hive.box<BooksClass>('booksDetials');
-            final bookIndex = bookBox.values.toList().indexWhere(
-                  (b) => b.bookShelf == widget.borrowedBookData.bookId,
-                );
-
-            if (bookIndex != -1) {
-              final book = bookBox.getAt(bookIndex)!;
-              book.numberOfBooks =
-                  (int.parse(book.numberOfBooks) + 1).toString();
-              await bookBox.putAt(bookIndex, book);
-            }
-          }
+          await _onBookReturned();
         }
       },
       itemBuilder: (context) => [
         const PopupMenuItem(
           value: 'Open',
-          child: Text(
-            'Open',
-            style: TextStyle(color: Colors.white),
-          ),
+          child: Text('Open', style: TextStyle(color: Colors.white)),
         ),
-        if (daysBalance! <= 1)
+        if (isLate)
           const PopupMenuItem(
             value: 'Late Return',
-            child: Text(
-              'Late Return',
-              style: TextStyle(color: Colors.white),
-            ),
+            child: Text('Late Return', style: TextStyle(color: Colors.white)),
           ),
-        if (daysBalance! >= 1)
+        if (!isLate)
           const PopupMenuItem(
             value: 'Book Returned',
-            child: Text(
-              'Book Returned',
-              style: TextStyle(color: Colors.white),
-            ),
+            child: Text('Book Returned', style: TextStyle(color: Colors.white)),
           ),
       ],
     );

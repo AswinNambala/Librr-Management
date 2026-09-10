@@ -92,7 +92,6 @@ Widget? mobileScreenDrawer(BuildContext context) {
     {'title': 'Members List', 'widget': const MemberList()},
     {'title': 'Books Lists', 'widget': const ListOfBooks()},
     {'title': 'List of Reqested Book', 'widget': const ListOfRequestBook()},
-    {'title': 'Late Book Entry', 'widget': const LateEntryBooks()},
     {'title': 'Report', 'widget': const ReportScreen()},
     {'title': 'QR Code', 'widget': const QrCodeScreen()},
     {'title': 'Setting', 'widget': const SettingScreen()},

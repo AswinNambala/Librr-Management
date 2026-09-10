@@ -25,4 +25,13 @@ class BooksRepository {
     await box.putAt(index, book);
     return true;
   }
+
+  Future<void> incrementStock(String bookShelf) async {
+    final index = indexOfShelf(bookShelf);
+    if (index == -1) return;
+    final book = box.getAt(index)!;
+    final current = int.tryParse(book.numberOfBooks) ?? 0;
+    book.numberOfBooks = (current + 1).toString();
+    await box.putAt(index, book);
+  }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librrr_management/features/about/pages/src_about.dart';
 import 'package:librrr_management/features/books/pages/src_list_of_books.dart';
-import 'package:librrr_management/features/late_entry/page/src_late_entry_book.dart';
 import 'package:librrr_management/features/members/pages/src_member_list.dart';
 import 'package:librrr_management/features/members/pages/src_membership_plan.dart';
 import 'package:librrr_management/features/qr%20code/pages/qr_code.dart';
@@ -93,7 +92,6 @@ Widget? mobileScreenDrawer(BuildContext context) {
     {'title': 'Members List', 'widget': const MemberList()},
     {'title': 'Books Lists', 'widget': const ListOfBooks()},
     {'title': 'List of Reqested Book', 'widget': const ListOfRequestBook()},
-    {'title': 'Late Book Entry', 'widget': const LateEntryBooks()},
     {'title': 'Report', 'widget': const ReportScreen()},
     {'title': 'QR Code', 'widget': const QrCodeScreen()},
     {'title': 'Setting', 'widget': const SettingScreen()},
