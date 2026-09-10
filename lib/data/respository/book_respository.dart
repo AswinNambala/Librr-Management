@@ -34,4 +34,19 @@ class BooksRepository {
     book.numberOfBooks = (current + 1).toString();
     await box.putAt(index, book);
   }
+
+  Future<void> update(BooksClass original, BooksClass edited) async {
+  original
+    ..imageBook = edited.imageBook
+    ..booksName = edited.booksName
+    ..authorName = edited.authorName
+    ..language = edited.language
+    ..numberOfBooks = edited.numberOfBooks
+    ..booksGenre = edited.booksGenre
+    ..booksPrice = edited.booksPrice
+    ..bookShelf = edited.bookShelf;
+  await original.save();
+}
+
+Future<void> delete(BooksClass book) => book.delete();
 }

@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:hive/hive.dart';
     part 'books _class.g.dart';
 @HiveType(typeId: 1)
-class BooksClass {
+class BooksClass extends HiveObject {
   @HiveField(0)
   Uint8List? imageBook;
   @HiveField(1)

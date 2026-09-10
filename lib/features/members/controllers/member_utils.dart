@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:hive/hive.dart';
 import 'package:librrr_management/data/models/books/books%20_class.dart';
 import 'package:librrr_management/data/models/members/members_class.dart';
+import 'package:librrr_management/data/respository/member_respository.dart';
 import 'package:librrr_management/features/books/pages/src_book_profile.dart';
 import 'package:librrr_management/features/members/pages/src_membership_plan.dart';
 import 'package:librrr_management/core/const_value.dart';
@@ -50,7 +51,7 @@ class MemberUtils {
     }
   }
 
-// add members page select plan for members 
+// add members page select plan for members
   static Future<void> addMemberMembershipPlanSelection(
       BuildContext context,
       Function(String plan, String joinDate, String expireDate, String memberId,
@@ -102,22 +103,20 @@ class MemberUtils {
     }
   }
 
- 
 // every function related to edit members page
 
-// edit members page update members plan 
+// edit members page update members plan
   static Future<void> editMemberMembershipPlanSelection({
     required BuildContext context,
     required TextEditingController planController,
     required TextEditingController joinDateController,
     required TextEditingController expireDateController,
-    required countPerMonth,
+    required Function(String count) onCountSelected,
   }) async {
     final selectedItem = await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const MembershipPlan()),
     );
-    String count = '';
 
     if (selectedItem != null) {
       planController.text = selectedItem;
@@ -126,6 +125,7 @@ class MemberUtils {
       final formatter = DateFormat('dd-MM-yyyy');
       joinDateController.text = formatter.format(now);
       late DateTime expireDate;
+      String count = '';
 
       switch (selectedItem) {
         case 'Base Plan':
@@ -148,7 +148,7 @@ class MemberUtils {
           expireDate = now;
       }
       expireDateController.text = formatter.format(expireDate);
-      countPerMonth = count;
+      onCountSelected(count); // FIX: actually propagates the new count
     }
   }
 
@@ -173,9 +173,9 @@ class MemberUtils {
   static Future<void> editMemberPickImage({
     required BuildContext context,
     required Uint8List? currentImage,
-    required int memberIndex,
     required MemberClass member,
     required Function(Uint8List?) onImageUpdated,
+    required MembersRepository repository,
   }) async {
     final shouldDelete = await showDialog<bool>(
       context: context,
@@ -195,30 +195,25 @@ class MemberUtils {
           if (currentImage != null)
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text(
-                'Delete',
-                style: TextStyle(color: Colors.red),
-              ),
+              child: const Text('Delete', style: TextStyle(color: Colors.red)),
             ),
         ],
       ),
     );
 
     if (shouldDelete == true) {
-      final box = Hive.box<MemberClass>('members');
-      member.profileImage = null;
-      await box.put(memberIndex, member);
+      await repository.updateImage(member, null);
       onImageUpdated(null);
     } else {
       final image = ImagePicker();
       final pickedFile = await image.pickImage(source: ImageSource.gallery);
-
       if (pickedFile != null) {
         final byte = await pickedFile.readAsBytes();
-        member.profileImage = byte;
+        await repository.updateImage(member, byte);
         onImageUpdated(byte);
-        // ignore: use_build_context_synchronously
-        SnackBarForAll.showSuccess(context, 'Image updated');
+        if (context.mounted) {
+          SnackBarForAll.showSuccess(context, 'Image updated');
+        }
       }
     }
   }

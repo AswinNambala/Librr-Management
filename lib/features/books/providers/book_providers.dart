@@ -34,15 +34,14 @@ class BooksListNotifier extends StateNotifier<List<BooksClass>> {
   }
 
   /// Returns null on success, or an error message to show the user.
-  Future<String?> updateBook(
-      BooksClass oldBook, BooksClass updatedBook) async {
-    final error = _validate(updatedBook);
+  Future<String?> updateBook(BooksClass original, BooksClass edited) async {
+    final error = _validate(edited);
     if (error != null) return error;
-    final index = _repo.indexOf(oldBook);
-    if (index == -1) return 'Update failed. Book not found.';
-    await _repo.updateBookAt(index, updatedBook);
+    await _repo.update(original, edited); // FIX: object-based, no index lookup
     return null;
   }
+
+  Future<void> deleteBook(BooksClass book) => _repo.delete(book);
 
   String? _validate(BooksClass book) {
     if (book.booksName.isEmpty ||
@@ -91,11 +90,11 @@ final filteredBooksProvider = Provider<List<BooksClass>>((ref) {
   }).toList();
 });
 
-
 // Book profile screen — history / borrowed, kept live via box.watch()
 
 final bookHistoryProvider =
-    StreamProvider.family<List<FinishedBookClass>, String>((ref, bookId) async* {
+    StreamProvider.family<List<FinishedBookClass>, String>(
+        (ref, bookId) async* {
   final box = Hive.box<FinishedBookClass>('finishedBooks');
   List<FinishedBookClass> read() =>
       box.values.where((b) => b.bookId == bookId).toList();
@@ -104,7 +103,8 @@ final bookHistoryProvider =
 });
 
 final borrowedBooksForBookProvider =
-    StreamProvider.family<List<BorrowedBookClass>, String>((ref, bookId) async* {
+    StreamProvider.family<List<BorrowedBookClass>, String>(
+        (ref, bookId) async* {
   final box = Hive.box<BorrowedBookClass>('borrowedBooks');
   List<BorrowedBookClass> read() =>
       box.values.where((b) => b.bookId == bookId).toList();

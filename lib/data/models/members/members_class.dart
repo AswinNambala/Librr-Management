@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 part 'members_class.g.dart';
 
 @HiveType(typeId: 0)
-class MemberClass {
+class MemberClass extends HiveObject {
   @HiveField(0)
   Uint8List? profileImage;
   @HiveField(1)

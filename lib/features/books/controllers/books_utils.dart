@@ -5,13 +5,14 @@ import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:librrr_management/data/models/books/books%20_class.dart';
 import 'package:librrr_management/data/models/members/members_class.dart';
+import 'package:librrr_management/data/respository/book_respository.dart';
 import 'package:librrr_management/features/members/pages/src_member_profile.dart';
 import 'package:librrr_management/core/helpers/about_test_style.dart';
 import 'package:librrr_management/core/helpers/snackbar_for_all.dart';
 
 class BooksUtils {
   // every functions for add book
-  // add books page pick image photo from gallery 
+  // add books page pick image photo from gallery
   static Future<void> addBookPickBookImage(
       BuildContext context, Function(Uint8List?) onPicked) async {
     final image = ImagePicker();
@@ -28,7 +29,6 @@ class BooksUtils {
     }
   }
 
-
 // generate book id as random number
   static Future<void> addBookIdGenerate(
       BuildContext context, Function(String) bookidGenerate) async {
@@ -43,9 +43,9 @@ class BooksUtils {
   static Future<void> editBookImage({
     required BuildContext context,
     required Uint8List? currentImage,
-    required int bookIndex,
     required BooksClass bookInfo,
     required Function(Uint8List?) onImageUpdated,
+    required BooksRepository repository,
   }) async {
     final shouldDelete = await showDialog<bool>(
       context: context,
@@ -73,27 +73,25 @@ class BooksUtils {
         ],
       ),
     );
-
     if (shouldDelete == true) {
-      final box = Hive.box<BooksClass>('booksDetials');
       bookInfo.imageBook = null;
-      await box.put(bookIndex, bookInfo);
+      await bookInfo.save();
       onImageUpdated(null);
     } else {
       final image = ImagePicker();
       final pickedFile = await image.pickImage(source: ImageSource.gallery);
-
       if (pickedFile != null) {
         final byte = await pickedFile.readAsBytes();
         bookInfo.imageBook = byte;
+        await bookInfo.save();
         onImageUpdated(byte);
-        // ignore: use_build_context_synchronously
-        SnackBarForAll.showSuccess(context, 'Image updated');
+        if (context.mounted) {
+          SnackBarForAll.showSuccess(context, 'Image updated');
+        }
       }
     }
   }
 
- 
 // navigate to members profile page function
   static void booksOpenMembersProfile(String membersId, BuildContext context) {
     final box = Hive.box<MemberClass>('members');

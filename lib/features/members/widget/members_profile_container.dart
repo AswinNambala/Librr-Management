@@ -23,41 +23,27 @@ class CountContainerMember extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 110,
-      width: 110,
-      padding: const EdgeInsets.all(16),
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Theme.of(context).colorScheme.surface,
         boxShadow: const [
           BoxShadow(
-            color: Colors.black26,
-            offset: Offset(2, 6),
-            blurRadius: 10,
-          ),
+              color: Colors.black26, offset: Offset(2, 6), blurRadius: 10),
         ],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: 25,
-            color: iconColor,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            count,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          const SizedBox(
-            height: 3,
-          ),
-          Text(
-            head,
-            style: Theme.of(context).textTheme.bodyMedium,
-          )
+          Icon(icon, size: 25, color: iconColor),
+          const SizedBox(height: 5),
+          Text(count,
+              style: Theme.of(context).textTheme.bodyLarge,
+              textAlign: TextAlign.center),
+          const SizedBox(height: 3),
+          Text(head, style: Theme.of(context).textTheme.bodyMedium),
         ],
       ),
     );
@@ -640,8 +626,7 @@ class MemberProfileDetialsSection extends StatefulWidget {
       required this.memberDetails,
       required this.membersKey,
       required this.remainingDays,
-      required this.booksInHand
-      });
+      required this.booksInHand});
 
   @override
   State<MemberProfileDetialsSection> createState() =>
@@ -719,14 +704,14 @@ class _MemberProfileDetialsSectionState
                           width: 100,
                           height: 25,
                           decoration: BoxDecoration(
-                            color: widget.remainingDays! > 1
+                            color: (widget.remainingDays ?? -1) > 1
                                 ? Colors.green
                                 : Theme.of(context).colorScheme.primary,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Center(
                             child: Text(
-                              widget.remainingDays! > 1 ? 'Active ' : 'Expired',
+                              (widget.remainingDays ?? -1) > 1 ? 'Active ' : 'Expired',
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
@@ -740,9 +725,8 @@ class _MemberProfileDetialsSectionState
                                 context,
                                 widget.memberDetails,
                                 widget.membersKey,
-                                widget.remainingDays.toString(),
-                                widget.booksInHand
-                                );
+                                widget.remainingDays?.toString() ?? 'Unknown',
+                                widget.booksInHand);
                           },
                           child: Container(
                             width: 100,
@@ -768,11 +752,11 @@ class _MemberProfileDetialsSectionState
               top: -12,
               right: -8,
               child: MemberProfileOptionMenu(
-                  account: widget.memberDetails,
-                  index: widget.membersKey,
-                  box: Hive.box<MemberClass>('members'),
-                  booksInHand: widget.booksInHand,
-                  ),
+                account: widget.memberDetails,
+                index: widget.membersKey,
+                box: Hive.box<MemberClass>('members'),
+                booksInHand: widget.booksInHand,
+              ),
             ),
           ],
         ),

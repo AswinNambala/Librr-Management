@@ -11,9 +11,7 @@ import 'package:librrr_management/features/books/pages/src_list_of_books.dart';
 
 class EditBooks extends ConsumerStatefulWidget {
   final BooksClass editBookInfo;
-  final int index;
-  const EditBooks(
-      {required this.editBookInfo, required this.index, super.key});
+  const EditBooks({required this.editBookInfo, super.key});
 
   @override
   ConsumerState<EditBooks> createState() => _EditBooksState();
@@ -115,8 +113,8 @@ class _EditBooksState extends ConsumerState<EditBooks> {
                         onTap: () {
                           BooksUtils.editBookImage(
                               context: context,
+                              repository: ref.read(booksRepositoryProvider),
                               currentImage: eBookImage,
-                              bookIndex: widget.index,
                               bookInfo: widget.editBookInfo,
                               onImageUpdated: (newImage) {
                                 setState(() {
