@@ -70,7 +70,7 @@ class _BorrowedBooksListState extends ConsumerState<BorrowedBooksList> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Library Borrowed Books',
+                      'Borrowed Books',
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const SizedBox(height: 4),

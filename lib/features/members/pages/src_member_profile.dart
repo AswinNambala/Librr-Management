@@ -15,7 +15,8 @@ class MemebersProfileScreen extends ConsumerStatefulWidget {
       {super.key, required this.memberDetails, required this.membersKey});
 
   @override
-  ConsumerState<MemebersProfileScreen> createState() => _MemebersProfileScreenState();
+  ConsumerState<MemebersProfileScreen> createState() =>
+      _MemebersProfileScreenState();
 }
 
 class _MemebersProfileScreenState extends ConsumerState<MemebersProfileScreen>
@@ -46,6 +47,7 @@ class _MemebersProfileScreenState extends ConsumerState<MemebersProfileScreen>
     final remainingDays = memberRemainingDays(widget.memberDetails.mExpireDate);
 
     return Scaffold(
+      backgroundColor: Colors.black,
       bottomNavigationBar: BottomNavBar(
           currentIndex: 1,
           onTap: (index) {
@@ -60,9 +62,9 @@ class _MemebersProfileScreenState extends ConsumerState<MemebersProfileScreen>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomCenter,
                     colors: [
-              Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-              Theme.of(context).colorScheme.surface
-            ])),
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                  Theme.of(context).colorScheme.surface
+                ])),
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
@@ -72,17 +74,19 @@ class _MemebersProfileScreenState extends ConsumerState<MemebersProfileScreen>
                   children: [
                     IconButton(
                         onPressed: () => Navigator.pop(context),
-                        icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30)),
+                        icon: const Icon(Icons.arrow_back,
+                            color: Colors.white, size: 30)),
                     IconButton(
                         onPressed: () {
                           navigateTo(
                               EditMemberScreen(
-                                  memberEditDetails: widget.memberDetails,
-                                  index: widget.membersKey),
+                                memberEditDetails: widget.memberDetails,
+                              ),
                               context);
                         },
                         icon: Icon(Icons.edit,
-                            color: Theme.of(context).colorScheme.primary, size: 25))
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 25))
                   ],
                 ),
                 const SizedBox(height: 20),

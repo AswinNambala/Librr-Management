@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:librrr_management/features/members/controllers/member_utils.dart';
 import 'package:librrr_management/data/models/borrowed_books/borrowed_book_class.dart';
 import 'package:librrr_management/data/models/finished_books/finished_book_class.dart';
@@ -43,7 +42,7 @@ class CountContainerMember extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center),
           const SizedBox(height: 3),
-          Text(head, style: Theme.of(context).textTheme.bodyMedium),
+          Text(head, style: Theme.of(context).textTheme.bodySmall),
         ],
       ),
     );
@@ -60,7 +59,8 @@ class MemberProfileTabBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(10)),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10))),
       child: TabBar(
           controller: tabControl,
           indicator: BoxDecoration(
@@ -81,9 +81,12 @@ class MemberProfileTabBar extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  Text(
-                    'Current',
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  Flexible(
+                    child: Text(
+                      'Current',
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   )
                 ],
               ),
@@ -100,9 +103,12 @@ class MemberProfileTabBar extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  Text(
-                    'History',
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  Flexible(
+                    child: Text(
+                      'History',
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   )
                 ],
               ),
@@ -119,9 +125,12 @@ class MemberProfileTabBar extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  Text(
-                    'Fine',
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  Flexible(
+                    child: Text(
+                      'Fine',
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   )
                 ],
               ),
@@ -147,13 +156,10 @@ class _MembersProfileCurrentTabState extends State<MembersProfileCurrentTab> {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomCenter,
-              colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-            Theme.of(context).colorScheme.surface
-          ])),
+          color: Theme.of(context).colorScheme.onTertiary,
+          borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10))),
       child: widget.currentBooks.isEmpty
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -240,13 +246,10 @@ class _MembersProfileHistoryTabState extends State<MembersProfileHistoryTab> {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomCenter,
-              colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-            Theme.of(context).colorScheme.surface
-          ])),
+          color: Theme.of(context).colorScheme.onTertiary,
+          borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10))),
       child: widget.finishedBooks.isEmpty
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -346,13 +349,10 @@ class _MembersProfileLateFinesTabState
     return Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomCenter,
-                colors: [
-              Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-              Theme.of(context).colorScheme.surface
-            ])),
+            color: Theme.of(context).colorScheme.onTertiary,
+            borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10))),
         child: widget.fineBooks.isEmpty
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -498,7 +498,6 @@ void memberProfileDetialsBottomSheet(BuildContext context, MemberClass member,
                           MemberProfileOptionMenu(
                             account: member,
                             index: keyIndex,
-                            box: Hive.box<MemberClass>('members'),
                             booksInHand: booksInHand,
                           ),
                         ],
@@ -672,79 +671,102 @@ class _MemberProfileDetialsSectionState
                           ),
                         ),
                 ),
-                const SizedBox(width: 30),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${widget.memberDetails.mFirstName} ${widget.memberDetails.mLastName}",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      widget.memberDetails.mMembersId,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      widget.memberDetails.mPhoneNumber,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 25,
-                          decoration: BoxDecoration(
-                            color: (widget.remainingDays ?? -1) > 1
-                                ? Colors.green
-                                : Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Center(
-                            child: Text(
-                              (widget.remainingDays ?? -1) > 1 ? 'Active ' : 'Expired',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            memberProfileDetialsBottomSheet(
-                                context,
-                                widget.memberDetails,
-                                widget.membersKey,
-                                widget.remainingDays?.toString() ?? 'Unknown',
-                                widget.booksInHand);
-                          },
-                          child: Container(
-                            width: 100,
-                            height: 28,
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surface,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Center(
-                              child: Text(
-                                'Details',
-                                style: Theme.of(context).textTheme.bodyMedium,
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${widget.memberDetails.mFirstName} ${widget.memberDetails.mLastName}",
+                        style: Theme.of(context).textTheme.titleMedium,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        widget.memberDetails.mMembersId,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        widget.memberDetails.mPhoneNumber,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Container(
+                              height: 25,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              decoration: BoxDecoration(
+                                color: (widget.remainingDays ?? -1) > 1
+                                    ? Colors.green
+                                    : Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  (widget.remainingDays ?? -1) > 1
+                                      ? 'Active'
+                                      : 'Expired',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
                               ),
                             ),
                           ),
-                        )
-                      ],
-                    )
-                  ],
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () {
+                                memberProfileDetialsBottomSheet(
+                                    context,
+                                    widget.memberDetails,
+                                    widget.membersKey,
+                                    widget.remainingDays?.toString() ??
+                                        'Unknown',
+                                    widget.booksInHand);
+                              },
+                              child: Container(
+                                height: 28,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Center(
+                                  child: Text(
+                                    'Details',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -754,7 +776,6 @@ class _MemberProfileDetialsSectionState
               child: MemberProfileOptionMenu(
                 account: widget.memberDetails,
                 index: widget.membersKey,
-                box: Hive.box<MemberClass>('members'),
                 booksInHand: widget.booksInHand,
               ),
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:librrr_management/core/helpers/about_test_style.dart';
 import 'package:librrr_management/core/helpers/menu_options.dart';
 import 'package:librrr_management/data/models/books/books%20_class.dart';
@@ -169,7 +168,7 @@ class _BooksListingSectionState extends State<BooksListingSection> {
               trailing: BookOptionsMenu(
                   bookData: bookData,
                   index: index,
-                  bookBox: Hive.box<BooksClass>('booksDetials')),
+                  ),
             ),
           );
         });
@@ -279,7 +278,7 @@ Widget booksBuildGridViewBuilder(
                               onTap: () {
                                 navigateTo(
                                     EditBooks(
-                                        editBookInfo: bookInfo, index: index),
+                                        editBookInfo: bookInfo),
                                     context);
                               },
                               child: const Icon(

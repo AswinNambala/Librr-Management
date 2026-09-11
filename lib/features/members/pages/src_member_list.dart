@@ -39,7 +39,8 @@ class _MemberListState extends ConsumerState<MemberList> {
     final memberCount = filteredMembers.length.toString();
 
     return Scaffold(
-      appBar: const AppBarForAll(appBarTitle: 'Members List', navToBorrow: false),
+      appBar:
+          const AppBarForAll(appBarTitle: 'Members List', navToBorrow: false),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 1,
         onTap: (index) {
@@ -64,17 +65,21 @@ class _MemberListState extends ConsumerState<MemberList> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Library Members', style: Theme.of(context).textTheme.headlineMedium),
+                    Text('Library Members',
+                        style: Theme.of(context).textTheme.headlineMedium),
                     const SizedBox(height: 4),
-                    Text("$memberCount Members", style: Theme.of(context).textTheme.bodyMedium),
+                    Text("$memberCount Members",
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ],
                 ),
                 Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.black),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.black),
                   child: IconButton(
                       onPressed: () {
-                        ref.read(membersGridViewProvider.notifier).state = !isGridView;
+                        ref.read(membersGridViewProvider.notifier).state =
+                            !isGridView;
                       },
                       icon: Icon(isGridView ? Icons.list : Icons.grid_view,
                           size: 30, color: Colors.white)),
@@ -82,13 +87,16 @@ class _MemberListState extends ConsumerState<MemberList> {
               ],
             ),
             const SizedBox(height: 20),
-            SearchTextFormField(searchString: searchText, hintText: 'Search members name, id....'),
+            SearchTextFormField(
+                searchString: searchText,
+                hintText: 'Search members name, id....'),
             const SizedBox(height: 10),
             Expanded(
               child: filteredMembers.isEmpty
                   ? const Center(
-                      child:
-                          Text('No members found', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500)),
+                      child: Text('No members found',
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.w500)),
                     )
                   : LayoutBuilder(
                       builder: (context, constraints) {
@@ -105,7 +113,8 @@ class _MemberListState extends ConsumerState<MemberList> {
                         return isGridView
                             ? GridView.builder(
                                 padding: const EdgeInsets.all(12),
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: crossAxisCount,
                                   crossAxisSpacing: 15,
                                   mainAxisSpacing: 15,
@@ -114,10 +123,12 @@ class _MemberListState extends ConsumerState<MemberList> {
                                 itemCount: filteredMembers.length,
                                 itemBuilder: (context, index) {
                                   final account = filteredMembers[index];
-                                  return membersBuildGridViewBuilder(context, account, index);
+                                  return membersBuildGridViewBuilder(
+                                      context, account, index);
                                 },
                               )
-                            : MembersListingSection(filteredMembers: filteredMembers);
+                            : MembersListingSection(
+                                filteredMembers: filteredMembers);
                       },
                     ),
             ),

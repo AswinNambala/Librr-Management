@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:librrr_management/core/helpers/menu_options.dart';
 import 'package:librrr_management/data/models/borrowed_books/borrowed_book_class.dart';
 import 'package:librrr_management/features/borrowed%20books/controllers/borrowed_book_utils.dart';
@@ -168,7 +167,6 @@ class _BorrowedBooksListingSectionState
               remainDays: remainingDate,
               borrowedBookData: borrowedBookData,
               index: index,
-              borrowedBookBox: Hive.box<BorrowedBookClass>('borrowedBooks'),
             ),
           ),
         );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:librrr_management/data/models/borrowed_books/borrowed_book_class.dart';
 import 'package:librrr_management/features/borrowed%20books/providers/borrowed_book_providers.dart';
 import 'package:librrr_management/core/helpers/menu_options.dart';
@@ -77,8 +76,6 @@ void borrowedBooksProfileBottomSheet(
                             remainDays: remainDate,
                             borrowedBookData: books,
                             index: keyIndex,
-                            borrowedBookBox:
-                                Hive.box<BorrowedBookClass>('borrowedBooks'),
                             closeParentSheetOnReturn:
                                 true,
                           ),

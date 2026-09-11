@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:librrr_management/data/models/books/books%20_class.dart';
-import 'package:librrr_management/data/models/borrowed_books/borrowed_book_class.dart';
-import 'package:librrr_management/data/models/finished_books/finished_book_class.dart';
 import 'package:librrr_management/features/books/providers/book_providers.dart';
 import 'package:librrr_management/features/books/widgets/profile_history_section.dart';
 import 'package:librrr_management/features/borrowed%20books/pages/src_add_borrowed_book.dart';
@@ -44,10 +41,6 @@ class _BooksProfileScreenState extends ConsumerState<BooksProfileScreen>
         ref.watch(bookHistoryProvider(widget.bookInfo.bookShelf));
     final booksBorrowed =
         ref.watch(borrowedBooksForBookProvider(widget.bookInfo.bookShelf));
-    final historyList =
-        bookHistory.asData?.value ?? const <FinishedBookClass>[];
-    final borrowedList =
-        booksBorrowed.asData?.value ?? const <BorrowedBookClass>[];
     return Scaffold(
       backgroundColor: Colors.black,
       bottomNavigationBar: BottomNavBar(
@@ -84,7 +77,6 @@ class _BooksProfileScreenState extends ConsumerState<BooksProfileScreen>
                         BookPofileOptionsMenu(
                           bookData: widget.bookInfo,
                           index: widget.index,
-                          bookBox: Hive.box<BooksClass>('booksDetials'),
                           booksInHand: booksBorrowed.asData?.value ?? const [],
                         )
                       ],

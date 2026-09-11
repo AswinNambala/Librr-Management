@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:librrr_management/data/models/members/members_class.dart';
-import 'package:librrr_management/features/members/pages/src_edit_members.dart';
 import 'package:librrr_management/features/members/pages/src_member_profile.dart';
 import 'package:librrr_management/core/helpers/about_test_style.dart';
 import 'package:librrr_management/core/helpers/menu_options.dart';
@@ -65,6 +63,7 @@ Widget membersBuildGridViewBuilder(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "${data.mFirstName} ${data.mLastName}",
@@ -75,28 +74,6 @@ Widget membersBuildGridViewBuilder(
                           style: Theme.of(context).textTheme.bodySmall),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          navigateTo(
-                              EditMemberScreen(
-                                  memberEditDetails: data, index: index),
-                              context);
-                        },
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.red,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      
-                    ],
-                  )
                 ],
               ),
             ),
@@ -167,7 +144,6 @@ class _MembersListingSectionState extends State<MembersListingSection> {
               trailing: MemberOptionsMenus(
                 account: account,
                 index: index,
-                box: Hive.box<MemberClass>('members'),
               ),
             ),
           ),

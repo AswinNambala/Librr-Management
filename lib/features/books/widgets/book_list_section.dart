@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:librrr_management/data/models/books/books%20_class.dart';
 import 'package:librrr_management/features/books/pages/src_book_profile.dart';
-import 'package:librrr_management/features/books/pages/src_edit_book.dart';
 import 'package:librrr_management/features/borrowed%20books/pages/src_borrowed_lists.dart';
 import 'package:librrr_management/features/members/pages/src_member_list.dart';
 import 'package:librrr_management/features/request%20book/pages/src_list_of_request_book.dart';
@@ -163,9 +161,9 @@ class _BooksListingSectionState extends State<BooksListingSection> {
                 ],
               ),
               trailing: BookOptionsMenu(
-                  bookData: bookData,
-                  index: index,
-                  bookBox: Hive.box<BooksClass>('booksDetials')),
+                bookData: bookData,
+                index: index,
+              ),
             ),
           );
         });
@@ -264,27 +262,6 @@ Widget booksBuildGridViewBuilder(
                           ),
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              navigateTo(
-                                  EditBooks(
-                                      editBookInfo: bookInfo, index: index),
-                                  context);
-                            },
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.red,
-                              size: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                        ],
-                      )
                     ],
                   )
                 ],

@@ -229,7 +229,7 @@ class _AddBorrowedBooksState extends ConsumerState<AddBorrowedBooks> {
                           style: ElevatedButton.styleFrom(
                               fixedSize: isWeb
                                   ? const Size(400, 50)
-                                  : const Size(170, 40),
+                                  : const Size(140, 30),
                               backgroundColor:
                                   Colors.black.withValues(alpha: 0.8)),
                           onPressed: () => Navigator.pop(context),
@@ -244,7 +244,7 @@ class _AddBorrowedBooksState extends ConsumerState<AddBorrowedBooks> {
                           style: ElevatedButton.styleFrom(
                               fixedSize: isWeb
                                   ? const Size(400, 50)
-                                  : const Size(170, 40),
+                                  : const Size(140, 30),
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary),
                           onPressed: _onSave,

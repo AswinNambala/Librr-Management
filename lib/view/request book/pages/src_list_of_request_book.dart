@@ -158,7 +158,7 @@ class _ListOfRequestBookState extends State<ListOfRequestBook> {
                               itemBuilder: (context, index) {
                                 final bookData = fliteredRequestedBooks[index];
                                 return requestedBooksBuildGridViewBuilder(
-                                    context, bookData, index);
+                                    context, bookData);
                               },
                             )
                           : RequestedBooksListingSection(fliteredRequestedBooks: fliteredRequestedBooks,);

@@ -2,7 +2,7 @@ import 'package:hive_flutter/adapters.dart';
     part 'request_book_class.g.dart';
 
 @HiveType(typeId: 4)
-class RequestBookClass {
+class RequestBookClass extends HiveObject{
   @HiveField(0)
   String rBookName;
   @HiveField(1)

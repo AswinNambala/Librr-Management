@@ -273,21 +273,21 @@ class _AddMembersSCreenState extends ConsumerState<AddMembersSCreen> {
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 fixedSize:
-                                    isWeb ? const Size(400, 50) : const Size(170, 40),
+                                    isWeb ? const Size(400, 50) : const Size(140, 30),
                                 backgroundColor: Colors.black.withValues(alpha: 0.8)),
                             onPressed: () => Navigator.pop(context),
                             child: Text(
                               'Cancel',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headlineSmall!
+                                  .titleMedium!
                                   .copyWith(color: Colors.red),
                             )),
                         if (paymentSection && !paymentCompleted)
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   fixedSize:
-                                      isWeb ? const Size(400, 50) : const Size(170, 40),
+                                      isWeb ? const Size(400, 50) : const Size(140, 30),
                                   backgroundColor: Colors.black.withValues(alpha: 0.8)),
                               onPressed: () async {
                                 bool cases = await bottomsheetforPayment(context);
@@ -302,14 +302,14 @@ class _AddMembersSCreenState extends ConsumerState<AddMembersSCreen> {
                                 'Payment',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headlineSmall!
+                                    .titleMedium!
                                     .copyWith(color: Colors.red),
                               )),
                         if (paymentCompleted)
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 fixedSize:
-                                    isWeb ? const Size(400, 50) : const Size(170, 40),
+                                    isWeb ? const Size(400, 50) : const Size(140, 30),
                                 backgroundColor: Colors.red.withValues(alpha: 0.8),
                               ),
                               onPressed: _onSave,

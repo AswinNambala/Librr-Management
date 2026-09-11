@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:librrr_management/features/books/controllers/books_utils.dart';
 import 'package:librrr_management/data/models/books/books%20_class.dart';
 import 'package:librrr_management/data/models/borrowed_books/borrowed_book_class.dart';
@@ -16,7 +15,8 @@ class BooksProfileTabBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(10)),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10))),
       child: TabBar(
           controller: tabControl,
           indicator: BoxDecoration(
@@ -505,7 +505,6 @@ void booksProfileBottomSheet(BuildContext context, BooksClass books,
                           BookPofileOptionsMenu(
                             bookData: books,
                             index: keyIndex,
-                            bookBox: Hive.box<BooksClass>('booksDetials'),
                             booksInHand: booksInHand,
                           )
                         ],

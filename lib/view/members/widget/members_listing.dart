@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:librrr_management/core/helpers/about_test_style.dart';
 import 'package:librrr_management/core/helpers/menu_options.dart';
 import 'package:librrr_management/data/models/members/members_class.dart';
@@ -82,7 +81,7 @@ Widget membersBuildGridViewBuilder(
                         onTap: () {
                           navigateTo(
                               EditMemberScreen(
-                                  memberEditDetails: data, index: index),
+                                  memberEditDetails: data),
                               context);
                         },
                         child: const Icon(
@@ -167,7 +166,6 @@ class _MembersListingSectionState extends State<MembersListingSection> {
               trailing: MemberOptionsMenus(
                 account: account,
                 index: index,
-                box: Hive.box<MemberClass>('members'),
               ),
             ),
           ),
