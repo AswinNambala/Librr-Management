@@ -27,7 +27,7 @@ class _ReportBorrowChartState extends State<ReportBorrowMonthlyChart> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: widget.isWeb? 500 : 400,
+      height: widget.isWeb ? 500 : 400,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface,
@@ -64,7 +64,7 @@ class _ReportBorrowChartState extends State<ReportBorrowMonthlyChart> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SizedBox(
-              height: widget.isWeb? 400 : 300,
+              height: widget.isWeb ? 400 : 300,
               width: widget.isWeb ? 1300 : 800,
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -221,7 +221,7 @@ class _ReportBorrowWeeklyChartState extends State<ReportBorrowWeeklyChart> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: widget.isWeb? 500 : 400,
+      height: widget.isWeb ? 500 : 400,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface,
@@ -259,7 +259,7 @@ class _ReportBorrowWeeklyChartState extends State<ReportBorrowWeeklyChart> {
             scrollDirection: Axis.horizontal,
             child: SizedBox(
               width: widget.isWeb ? 1300 : 600,
-              height: widget.isWeb? 400 : 300,
+              height: widget.isWeb ? 400 : 300,
               child: Padding(
                 padding: const EdgeInsets.only(
                     top: 5, left: 10, right: 15, bottom: 5),
@@ -429,9 +429,8 @@ class _ReportAllBooksChartState extends State<ReportAllBooksChart> {
   void loadingData() {
     genreCount = ReportUtils.reportFliterBooksGenre(genreList);
 
-    genreData = genreCount.entries
-        .where((entry) => entry.value > 0) 
-        .map((entry) {
+    genreData =
+        genreCount.entries.where((entry) => entry.value > 0).map((entry) {
       int index = genreList.indexOf(entry.key);
       return PieChartSectionData(
         value: entry.value.toDouble(),
@@ -474,9 +473,11 @@ class _ReportAllBooksChartState extends State<ReportAllBooksChart> {
                 size: 30,
               ),
               const SizedBox(width: 10),
-              AboutTestStyle(
-                text: 'Books Categories Distribution',
-                styleText: Theme.of(context).textTheme.bodyLarge,
+              Expanded(
+                child: AboutTestStyle(
+                  text: 'Books Categories Distribution',
+                  styleText: Theme.of(context).textTheme.bodyLarge,
+                ),
               ),
             ],
           ),
@@ -513,19 +514,18 @@ class _ReportAllBooksChartState extends State<ReportAllBooksChart> {
     return Column(
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildLegendItem(0, 'Supernatural', textStyle),
-            const SizedBox(width: 20),
             _buildLegendItem(1, 'Romance', textStyle),
-            const SizedBox(width: 20),
             _buildLegendItem(2, 'Travel', textStyle),
           ],
         ),
         const SizedBox(height: 20),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildLegendItem(3, 'Personal Development', textStyle),
-            const SizedBox(width: 20),
             _buildLegendItem(4, 'Comedy', textStyle),
           ],
         ),
@@ -547,7 +547,7 @@ class _ReportAllBooksChartState extends State<ReportAllBooksChart> {
           color: ReportUtils.colorList[index],
           size: 15,
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 5),
         AboutTestStyle(
           text: label,
           styleText: style,

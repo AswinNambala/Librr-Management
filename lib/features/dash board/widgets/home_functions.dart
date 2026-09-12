@@ -18,8 +18,6 @@ class DashBoardContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 160,
-      // width removed — the parent now controls width via Expanded
-      width: double.infinity,
       padding: const EdgeInsets.only(top: 15, right: 15, left: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -79,7 +77,7 @@ class ShimmerDashBoardContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 160,
-      width: 180, 
+      width: 180,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.grey[300],

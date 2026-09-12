@@ -90,16 +90,21 @@ class _ReportOverviewSectionState extends State<ReportOverviewSection> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    DashBoardContainer(
-                        icon: Icons.library_books_outlined,
-                        boxColor: Colors.blue,
-                        subHead: 'Total Books',
-                        count: widget.totalBook.toString()),
-                    DashBoardContainer(
-                        icon: Icons.people_sharp,
-                        boxColor: Colors.yellow,
-                        subHead: 'Members',
-                        count: widget.memberCount.toString())
+                    Expanded(
+                      child: DashBoardContainer(
+                          icon: Icons.library_books_outlined,
+                          boxColor: Colors.blue,
+                          subHead: 'Total Books',
+                          count: widget.totalBook.toString()),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: DashBoardContainer(
+                          icon: Icons.people_sharp,
+                          boxColor: Colors.yellow,
+                          subHead: 'Members',
+                          count: widget.memberCount.toString()),
+                    ),
                   ],
                 ),
                 const SizedBox(
@@ -108,18 +113,23 @@ class _ReportOverviewSectionState extends State<ReportOverviewSection> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    DashBoardContainer(
-                        icon: Icons.book_outlined,
-                        boxColor: Colors.orange.withValues(alpha: 0.6),
-                        subHead: 'Books \n Borrowed',
-                        count: widget.borrowedBookCount.toString()),
-                    DashBoardContainer(
-                        icon: Icons.account_balance_wallet_rounded,
-                        boxColor: Colors.red.withValues(alpha: 0.6),
-                        subHead: 'Total Fine',
-                        count: widget.totalFineAmount != null
-                            ? '₹${widget.totalFineAmount}'
-                            : '0')
+                    Expanded(
+                      child: DashBoardContainer(
+                          icon: Icons.book_outlined,
+                          boxColor: Colors.orange.withValues(alpha: 0.6),
+                          subHead: 'Books \n Borrowed',
+                          count: widget.borrowedBookCount.toString()),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: DashBoardContainer(
+                          icon: Icons.account_balance_wallet_rounded,
+                          boxColor: Colors.red.withValues(alpha: 0.6),
+                          subHead: 'Total Fine',
+                          count: widget.totalFineAmount != null
+                              ? '₹${widget.totalFineAmount}'
+                              : '0'),
+                    ),
                   ],
                 )
               ],

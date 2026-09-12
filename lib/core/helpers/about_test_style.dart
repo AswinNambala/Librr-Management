@@ -3,16 +3,27 @@ import 'package:flutter/material.dart';
 class AboutTestStyle extends StatelessWidget {
   final String? text;
   final TextStyle? styleText;
-  const AboutTestStyle(
-      {super.key, this.text, this.styleText});
+  final int? maxLines;
+  final TextOverflow overflow;
+
+  const AboutTestStyle({
+    super.key,
+    this.text,
+    this.styleText,
+    this.maxLines,
+    this.overflow = TextOverflow.ellipsis,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0.2),
       child: Text(
-        text!,
+        text ?? '',
         style: styleText,
+        maxLines: maxLines,
+        overflow: overflow,
+        softWrap: overflow != TextOverflow.ellipsis || maxLines != 1,
       ),
     );
   }

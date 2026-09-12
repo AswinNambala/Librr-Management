@@ -12,9 +12,14 @@ class ReportUtils {
     Map<int, int> monthlyCount = {for (int i = 0; i <= 12; i++) i: 0};
     final formatter = DateFormat('dd-MM-yyyy');
     for (var book in box.values) {
-      DateTime date = formatter.parse(book.borrowedDate);
+      DateTime? date;
+      try {
+        date = formatter.parse(book.borrowedDate);
+      } catch (_) {
+        continue; 
+      }
       final month = date.month;
-      monthlyCount[month] = (monthlyCount[month] ?? 0);
+      monthlyCount[month] = (monthlyCount[month] ?? 0) + 1;
     }
     return List<FlSpot>.generate(12, (i) {
       final monthIndex = i + 1;
@@ -27,9 +32,14 @@ class ReportUtils {
     Map<int, int> weeklyCount = {for (int i = 0; i <= 7; i++) i: 0};
     final formatter = DateFormat('dd-MM-yyyy');
     for (var book in box.values) {
-      DateTime date = formatter.parse(book.borrowedDate);
-      final month = date.weekday;
-      weeklyCount[month] = (weeklyCount[month] ?? 0);
+      DateTime? date;
+      try {
+        date = formatter.parse(book.borrowedDate);
+      } catch (_) {
+        continue; 
+      }
+      final weekday = date.weekday;
+      weeklyCount[weekday] = (weeklyCount[weekday] ?? 0) + 1;
     }
     return List<FlSpot>.generate(7, (i) {
       final weekIndex = i + 1;
@@ -57,7 +67,7 @@ class ReportUtils {
     return dataMap;
   }
 
-// colors for report page pie Chart data
+  // colors for report page pie Chart data
   static final List<Color> colorList = [
     Colors.red,
     Colors.green,
@@ -67,33 +77,36 @@ class ReportUtils {
     Colors.orange
   ];
 
-  static List<PieChartSectionData> reportPieChartDataGet(BuildContext context,
-      Map<String, int> genresCount) {
+  static List<PieChartSectionData> reportPieChartDataGet(
+      BuildContext context, Map<String, int> genresCount) {
     final total = genresCount.values.fold(0, (sum, value) => sum + value);
+    if (total == 0) {
+      return []; 
+    }
     int index = 0;
     return genresCount.entries.map((entry) {
       final percent = (entry.value / total) * 100;
       return PieChartSectionData(
-        color: colorList[index++ % colorList.length],
-        value: percent,
-        title: '${percent.toStringAsFixed(1)} %',
-        radius: 50,
-        titleStyle: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400)
-
-      );
+          color: colorList[index++ % colorList.length],
+          value: percent,
+          title: '${percent.toStringAsFixed(1)} %',
+          radius: 50,
+          titleStyle: const TextStyle(
+              fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400));
     }).toList();
   }
 
-  // calculate the total fine amount recieved 
+  // calculate the total fine amount recieved
   static String fineAmountCalculate(BuildContext context) {
     final box = Hive.box<FinishedBookClass>('finishedBooks');
-    int sum = 0;
+    num sum = 0;
     for (var b in box.values) {
-      if (b.fineAmount.isNotEmpty){
-        int amount = int.parse(b.fineAmount.trim());
-      sum += amount;
+      if (b.fineAmount.isNotEmpty) {
+        final amount = num.tryParse(b.fineAmount.trim());
+        if (amount != null) {
+          sum += amount;
+        }
       }
-      
     }
     return sum.toString();
   }
